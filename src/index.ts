@@ -8,7 +8,7 @@ import { hasRolesMiddleware } from './middleware/hasRolesMiddleware.js'
 
 import { RequestWithUser } from './types/RequestWithUser.js'
 
-import { UserRouteController } from './controllers/UserRouteController.js'
+import { UserRouteController } from './controllers/routes/UserRouteController.js'
 import { AuthenticationController } from './controllers/AuthenticationController.js'
 
 const app = express()

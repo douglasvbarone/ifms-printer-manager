@@ -1,5 +1,5 @@
-import { UserController } from './UserController.js'
-import { prisma } from '../prisma.js'
+import { UserController } from '../UserController.js'
+import { prisma } from '../../prisma.js'
 import { Request, Response } from 'express'
 
 export class UserRouteController {
