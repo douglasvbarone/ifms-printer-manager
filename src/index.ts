@@ -7,9 +7,9 @@ import { authMiddleware } from './middleware/authMiddleware.js'
 import { hasRolesMiddleware } from './middleware/hasRolesMiddleware.js'
 
 import { RequestWithUser } from './types.js'
-import { login } from './authentication.js'
 
 import { UserRouteController } from './controllers/UserRouteController.js'
+import { AuthenticationController } from './controllers/AuthenticationController.js'
 
 const app = express()
 
@@ -34,7 +34,7 @@ app.post('/api/login', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Missing username or password' })
 
   try {
-    const token = await login(username, password)
+    const token = await AuthenticationController.login(username, password)
     res.json({ token })
   } catch (error: any) {
     res.status(401).json({ error: error.message })

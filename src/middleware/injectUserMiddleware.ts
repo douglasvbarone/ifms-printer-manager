@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 import { RequestWithUser } from '../types.js'
-import { authenticate } from '../authentication.js'
+import { AuthenticationController } from '../controllers/AuthenticationController.js'
 
 function getToken(req: Request) {
   const authHeader = req.headers.authorization as string
@@ -21,7 +21,7 @@ export async function injectUserMiddleware(
   const token = getToken(req)
 
   if (token) {
-    const user = await authenticate(token)
+    const user = await AuthenticationController.authenticate(token)
     req.user = user
   }
 
