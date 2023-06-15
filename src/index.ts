@@ -6,7 +6,7 @@ import { injectUserMiddleware } from './middleware/injectUserMiddleware.js'
 import { authMiddleware } from './middleware/authMiddleware.js'
 import { hasRolesMiddleware } from './middleware/hasRolesMiddleware.js'
 
-import { RequestWithUser } from './types.js'
+import { RequestWithUser } from './types/RequestWithUser.js'
 
 import { UserRouteController } from './controllers/UserRouteController.js'
 import { AuthenticationController } from './controllers/AuthenticationController.js'

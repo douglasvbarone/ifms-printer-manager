@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express'
-import { RequestWithUser } from '../types.js'
+import { RequestWithUser } from '../types/RequestWithUser.js'
 import { Role } from '@prisma/client'
 
 export async function hasRolesMiddleware(roles: Role[]) {

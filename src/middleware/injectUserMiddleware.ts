@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { RequestWithUser } from '../types.js'
+import { RequestWithUser } from '../types/RequestWithUser.js'
 import { AuthenticationController } from '../controllers/AuthenticationController.js'
 
 function getToken(req: Request) {
