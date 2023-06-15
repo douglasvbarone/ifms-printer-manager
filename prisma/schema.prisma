@@ -29,3 +29,21 @@ model User {
 
   roles Role[] @default([USER])
 }
+
+model Printer {
+  id Int @id @default(autoincrement())
+
+  hostname     String?
+  friendlyName String?
+  ip           String
+  model        PrinterModel
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+enum PrinterModel {
+  m3655idn
+  m2040dn
+  p6235cdn
+}

@@ -1,12 +1,15 @@
 import 'dotenv/config'
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
-import { login } from './authentication.js'
+
 import {
   authenticatedMiddleware,
   hasRolesMiddleware
 } from './middleware/authorization.js'
+import { injectUserMiddleware } from './middleware/injectUser.js'
+
 import { RequestWithUser } from './types.js'
+import { login } from './authentication.js'
 import { UserController } from './controllers/UserController.js'
 
 const app = express()
@@ -14,6 +17,8 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use('/', express.static('public'))
+
+app.use(injectUserMiddleware)
 
 app.use(bodyParser.json())
 
