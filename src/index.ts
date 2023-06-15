@@ -2,15 +2,14 @@ import 'dotenv/config'
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 
-import {
-  authenticatedMiddleware,
-  hasRolesMiddleware
-} from './middleware/authorization.js'
-import { injectUserMiddleware } from './middleware/injectUser.js'
+import { injectUserMiddleware } from './middleware/injectUserMiddleware.js'
+import { authMiddleware } from './middleware/authMiddleware.js'
+import { hasRolesMiddleware } from './middleware/hasRolesMiddleware.js'
 
 import { RequestWithUser } from './types.js'
 import { login } from './authentication.js'
-import { UserController } from './controllers/UserController.js'
+
+import { UserRouteController } from './controllers/UserRouteController.js'
 
 const app = express()
 
@@ -44,15 +43,15 @@ app.post('/api/login', async (req: Request, res: Response) => {
 
 app.get(
   '/api/me',
-  authenticatedMiddleware,
+  authMiddleware,
   async (req: RequestWithUser, res: Response) => res.json(req.user)
 )
 
 app.get(
   '/api/protected',
-  authenticatedMiddleware,
+  authMiddleware,
   async (req: RequestWithUser, res: Response) => {
-    res.send('Hello protected world! ' + req.user?.displayName)
+    res.json('Hello protected world! ' + req.user?.displayName)
   }
 )
 
@@ -60,18 +59,14 @@ app.get(
   '/api/admin',
   await hasRolesMiddleware(['ADMIN']),
   async (req: RequestWithUser, res: Response) => {
-    res.send('Hello Admin!' + req.user?.username)
+    res.json('Hello Admin!' + req.user?.username)
   }
 )
 
 app.get(
   '/api/user/:username',
   await hasRolesMiddleware(['ADMIN']),
-  async (req: Request, res: Response) => {
-    const { username } = req.params
-
-    res.json(await UserController.getUser(username))
-  }
+  UserRouteController.get
 )
 
 // Start server
