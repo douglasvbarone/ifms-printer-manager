@@ -33,17 +33,42 @@ model User {
 model Printer {
   id Int @id @default(autoincrement())
 
-  hostname     String?
   friendlyName String?
+
+  serialNumber String?      @unique
+  hostname     String?
   ip           String
   model        PrinterModel
 
+  blackTonerModel   String?
+  cyanTonerModel    String?
+  magentaTonerModel String?
+  yellowTonerModel  String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+
+  PrinterStatus PrinterStatus[]
 }
 
 enum PrinterModel {
   m3655idn
   m2040dn
   p6235cdn
+}
+
+model PrinterStatus {
+  id Int @id @default(autoincrement())
+
+  tonerBlackLevel   Int
+  tonerCyanLevel    Int?
+  tonerMagentaLevel Int?
+  tonerYellowLevel  Int?
+
+  counter Int
+
+  createdAt DateTime @default(now())
+
+  printerId Int
+  printer   Printer @relation(fields: [printerId], references: [id])
 }
