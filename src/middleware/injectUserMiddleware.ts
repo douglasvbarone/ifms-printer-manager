@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { RequestWithUser } from '../types/RequestWithUser.js'
 import { AuthenticationController } from '../controllers/AuthenticationController.js'
 
 function getToken(req: Request) {
@@ -14,7 +13,7 @@ function getToken(req: Request) {
 }
 
 export async function injectUserMiddleware(
-  req: RequestWithUser,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
@@ -23,7 +22,7 @@ export async function injectUserMiddleware(
   if (token) {
     try {
       const user = await AuthenticationController.authenticate(token)
-      req.user = user
+      res.locals.user = user
     } catch (error: any) {
       return res.status(401).json({ error: error.message })
     }

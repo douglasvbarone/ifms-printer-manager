@@ -1,13 +1,12 @@
-import { Response, NextFunction } from 'express'
-import { RequestWithUser } from '../types/RequestWithUser.js'
+import { Response, NextFunction, Request } from 'express'
 
 export async function authMiddleware(
-  req: RequestWithUser,
+  req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    if (!req.user) {
+    if (!res.locals.user) {
       res.status(401).json({ error: 'Must be logged in' })
       return
     }

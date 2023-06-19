@@ -5,8 +5,6 @@ import { injectUserMiddleware } from './middleware/injectUserMiddleware.js'
 import { authMiddleware } from './middleware/authMiddleware.js'
 import { hasRolesMiddleware } from './middleware/hasRolesMiddleware.js'
 
-import { RequestWithUser } from './types/RequestWithUser.js'
-
 import { UserRouteController } from './controllers/routes/UserRouteController.js'
 import { AuthenticationController } from './controllers/AuthenticationController.js'
 
@@ -38,25 +36,23 @@ app.post('/api/login', async (req: Request, res: Response) => {
   }
 })
 
-app.get(
-  '/api/me',
-  authMiddleware,
-  async (req: RequestWithUser, res: Response) => res.json(req.user)
+app.get('/api/me', authMiddleware, async (req: Request, res: Response) =>
+  res.json(res.locals.user)
 )
 
 app.get(
   '/api/protected',
   authMiddleware,
-  async (req: RequestWithUser, res: Response) => {
-    res.json('Hello protected world! ' + req.user?.displayName)
+  async (req: Request, res: Response) => {
+    res.json('Hello protected world! ' + res.locals.user?.displayName)
   }
 )
 
 app.get(
   '/api/admin',
   hasRolesMiddleware(['ADMIN']),
-  async (req: RequestWithUser, res: Response) => {
-    res.json('Hello Admin!' + req.user?.username)
+  async (req: Request, res: Response) => {
+    res.json('Hello Admin!' + res.locals.user?.username)
   }
 )
 

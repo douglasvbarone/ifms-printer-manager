@@ -1,11 +1,11 @@
-import { Response, NextFunction } from 'express'
-import { RequestWithUser } from '../types/RequestWithUser.js'
+import { Response, NextFunction, Request } from 'express'
+
 import { Role } from '@prisma/client'
 
 export function hasRolesMiddleware(roles: Role[]) {
-  return function (req: RequestWithUser, res: Response, next: NextFunction) {
+  return function (req: Request, res: Response, next: NextFunction) {
     try {
-      const userRoles = req.user?.roles
+      const userRoles = res.locals.user?.roles
 
       if (roles.some(role => userRoles?.includes(role))) next()
       else res.status(401).json({ error: 'Not authorized!' })
