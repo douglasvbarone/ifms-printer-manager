@@ -21,8 +21,12 @@ export async function injectUserMiddleware(
   const token = getToken(req)
 
   if (token) {
-    const user = await AuthenticationController.authenticate(token)
-    req.user = user
+    try {
+      const user = await AuthenticationController.authenticate(token)
+      req.user = user
+    } catch (error: any) {
+      return res.status(401).json({ error: error.message })
+    }
   }
 
   next()

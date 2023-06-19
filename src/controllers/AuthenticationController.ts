@@ -34,7 +34,7 @@ export class AuthenticationController {
 
       return user
     } catch (error: any) {
-      throw new Error('Invalid token')
+      throw new Error(`Invalid token. ${error.message}`)
     }
   }
 }
