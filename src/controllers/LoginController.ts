@@ -1,7 +1,9 @@
-import { Request, Response } from 'express'
+import { Request, Response, Router } from 'express'
 import { AuthenticationService } from '../services/AuthenticationService.js'
 
-export class LoginController {
+const router = Router()
+
+class LoginController {
   static async login(req: Request, res: Response) {
     const { username, password } = req.body
 
@@ -18,3 +20,7 @@ export class LoginController {
     }
   }
 }
+
+router.post('/', LoginController.login)
+
+export default router

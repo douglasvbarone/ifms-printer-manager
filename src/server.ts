@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 import { injectUserMiddleware } from './middleware/injectUserMiddleware.js'
 import { authMiddleware } from './middleware/authMiddleware.js'
 
-import LoginRouter from './routers/LoginRouter.js'
+import LoginRouter from './controllers/LoginController.js'
 
 export const app = express()
 
