@@ -30,7 +30,7 @@ export class AuthenticationController {
         where: { username }
       })
 
-      if (!user) return null
+      if (!user) return await UserController.importUser(username)
 
       return user
     } catch (error: any) {

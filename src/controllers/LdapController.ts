@@ -6,7 +6,7 @@ const BIND_USER = process.env.AD_BIND_USER || ''
 const BIND_PASSWD = process.env.AD_BIND_PASSWORD || ''
 
 interface LdapClientInterface extends Client {
-  authenticate(username: string, password: string): Promise<LdapUser | null>
+  authenticate(username: string, password: string): Promise<void>
   getUser(username: string): Promise<any>
 }
 
@@ -96,10 +96,6 @@ export class LdapController extends Client implements LdapClientInterface {
   async authenticate(username: string, password: string) {
     await this.bind(`${DOMAIN}\\${username}`, password)
 
-    const user = await this.getUser(username)
-
     await this.unbind()
-
-    return user
   }
 }
