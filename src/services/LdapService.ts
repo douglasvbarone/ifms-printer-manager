@@ -18,17 +18,17 @@ type LdapUser = {
   groups?: string[]
 }
 
-export class LdapController extends Client implements LdapClientInterface {
-  private static instance: LdapController
+export class LdapService extends Client implements LdapClientInterface {
+  private static instance: LdapService
 
   constructor() {
-    if (LdapController.instance) return LdapController.instance
+    if (LdapService.instance) return LdapService.instance
 
     super({
       url: `ldap://${process.env.AD_HOST}`
     })
 
-    LdapController.instance = this
+    LdapService.instance = this
   }
 
   /**

@@ -1,14 +1,14 @@
 import { User } from '@prisma/client'
-import { LdapController } from '../controllers/LdapController.js'
+import { LdapService } from './LdapService.js'
 import { prisma } from '../prisma.js'
 
 const ADMIN_GROUP = process.env.ADMIN_GROUP || 'PP-SERTI'
 const INSPECTOR_GROUP = process.env.INSPECTOR_GROUP || 'Inspectors'
 const USER_GROUP = process.env.USER_GROUP || 'G_SERVIDORES'
 
-export class UserController {
+export class UserService {
   static async importUser(username: string) {
-    const ldap = new LdapController()
+    const ldap = new LdapService()
 
     const ldapUser = await ldap.getUser(username)
 

@@ -1,19 +1,19 @@
 import jwt from 'jsonwebtoken'
 import { prisma } from '../prisma.js'
-import { LdapController } from '../controllers/LdapController.js'
-import { UserController } from '../controllers/UserController.js'
+import { LdapService } from './LdapService.js'
+import { UserService } from './UserService.js'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret'
 
-export class AuthenticationController {
+export class AuthenticationService {
   private constructor() {}
 
   static async login(username: string, password: string) {
-    const ldap = new LdapController()
+    const ldap = new LdapService()
 
     await ldap.authenticate(username, password)
 
-    await UserController.importUser(username)
+    await UserService.importUser(username)
 
     const token = jwt.sign({ username }, JWT_SECRET, {
       expiresIn: '2 days'
@@ -22,7 +22,7 @@ export class AuthenticationController {
     return `Bearer ${token}`
   }
 
-  static async authenticate(token: string) {
+  static async jwtAuth(token: string) {
     try {
       const { username } = jwt.verify(token, JWT_SECRET) as { username: string }
 
@@ -30,7 +30,7 @@ export class AuthenticationController {
         where: { username }
       })
 
-      if (!user) return await UserController.importUser(username)
+      if (!user) return await UserService.importUser(username)
 
       return user
     } catch (error: any) {

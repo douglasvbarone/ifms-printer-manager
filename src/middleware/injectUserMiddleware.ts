@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { AuthenticationController } from '../controllers/AuthenticationController.js'
+import { AuthenticationService } from '../services/AuthenticationService.js'
 
 function getToken(req: Request) {
   const authHeader = req.headers.authorization as string
@@ -21,7 +21,7 @@ export async function injectUserMiddleware(
 
   if (token) {
     try {
-      const user = await AuthenticationController.authenticate(token)
+      const user = await AuthenticationService.jwtAuth(token)
       res.locals.user = user
     } catch (error: any) {
       return res.status(401).json({ error: error.message })
