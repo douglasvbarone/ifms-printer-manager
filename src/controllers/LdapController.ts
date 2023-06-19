@@ -15,6 +15,7 @@ type LdapUser = {
   mail: string | null
   displayName: string
   thumbnailPhoto: string | null
+  groups?: string[]
 }
 
 export class LdapController extends Client implements LdapClientInterface {
@@ -45,19 +46,25 @@ export class LdapController extends Client implements LdapClientInterface {
     }
   }
 
-  async getUser(username: string) {
+  async getUser(username: string): Promise<LdapUser> {
     return await this.adminBondOperation(async () => {
       const { searchEntries } = await this.search(DN, {
         scope: 'sub',
         filter: `(sAMAccountName=${username})`,
-        attributes: ['mail', 'sAMAccountName', 'displayName', 'thumbnailPhoto'],
+        attributes: [
+          'mail',
+          'sAMAccountName',
+          'displayName',
+          'thumbnailPhoto',
+          'dn'
+        ],
         explicitBufferAttributes: ['thumbnailPhoto']
       })
 
       if (!searchEntries.length)
         throw new Error('User not found on LDAP server.')
 
-      const { sAMAccountName, displayName, mail, thumbnailPhoto } =
+      const { sAMAccountName, displayName, mail, thumbnailPhoto, dn } =
         searchEntries[0]
 
       const ldapUser: LdapUser = {
@@ -66,11 +73,24 @@ export class LdapController extends Client implements LdapClientInterface {
         mail: mail.toString(),
         thumbnailPhoto: `data:image/png;base64,${Buffer.from(
           thumbnailPhoto as Buffer
-        ).toString('base64')}`
+        ).toString('base64')}`,
+        groups: await this.getGroupsForUser(dn.toString())
       }
 
       return ldapUser
     })
+  }
+
+  async getGroupsForUser(dn: string) {
+    const { searchEntries } = await this.search(DN, {
+      scope: 'sub',
+      filter: `(member:1.2.840.113556.1.4.1941:=${dn})`,
+      attributes: ['cn']
+    })
+
+    if (!searchEntries.length) throw new Error('User not found on LDAP server.')
+
+    return searchEntries.map(entry => entry.cn.toString())
   }
 
   async authenticate(username: string, password: string) {

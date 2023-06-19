@@ -7,6 +7,7 @@ import { hasRolesMiddleware } from './middleware/hasRolesMiddleware.js'
 
 import { UserRouteController } from './controllers/routes/UserRouteController.js'
 import { AuthenticationController } from './controllers/AuthenticationController.js'
+import { LoginRouteController } from './controllers/routes/LoginRouteController.js'
 
 export const app = express()
 
@@ -22,19 +23,7 @@ app.get('/api/', async (req: Request, res: Response) => {
 })
 
 // Login route
-app.post('/api/login', async (req: Request, res: Response) => {
-  const { username, password } = req.body
-
-  if (!username || !password)
-    return res.status(400).json({ error: 'Missing username or password' })
-
-  try {
-    const token = await AuthenticationController.login(username, password)
-    res.json({ token })
-  } catch (error: any) {
-    res.status(401).json({ error: error.message })
-  }
-})
+app.post('/api/login', LoginRouteController.login)
 
 app.get('/api/me', authMiddleware, async (req: Request, res: Response) =>
   res.json(res.locals.user)

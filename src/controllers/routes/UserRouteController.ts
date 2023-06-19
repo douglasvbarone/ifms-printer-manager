@@ -13,7 +13,7 @@ export class UserRouteController {
         where: { username }
       })
 
-      if (!user) return await UserController.importUser(username)
+      if (!user) return res.json(await UserController.importUser(username))
       else UserController.importUser(username)
 
       res.json(user)
