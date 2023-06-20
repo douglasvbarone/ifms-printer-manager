@@ -1,5 +1,10 @@
 import 'dotenv/config'
+import * as path from 'node:path'
+import * as process from 'node:process'
+import { fileURLToPath } from 'node:url'
+
 import { app } from './server.js'
+import Bree from 'bree'
 
 const PORT = process.env.PORT || 3000
 
@@ -7,3 +12,18 @@ const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
 })
+
+// Jobs
+const bree = new Bree({
+  root: path.join(path.dirname(fileURLToPath(import.meta.url)), 'jobs'),
+  defaultExtension: process.env.TS_NODE ? 'ts' : 'js',
+
+  jobs: [
+    {
+      name: 'printerStatus',
+      interval: '2s'
+    }
+  ]
+})
+
+bree.start()
