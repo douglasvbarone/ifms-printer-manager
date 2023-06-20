@@ -34,6 +34,18 @@ class PrinterController {
     res.json(printer)
   }
 
+  static async create(req: Request, res: Response) {
+    const { friendlyName, ip, location } = req.body
+
+    const printer = await prisma.printer.create({
+      data: { friendlyName, ip, location }
+    })
+
+    // Run snmp here
+
+    res.json(printer)
+  }
+
   static async edit(req: Request, res: Response) {
     const { id } = req.params
     const { friendlyName, ip, location } = req.body

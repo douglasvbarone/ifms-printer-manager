@@ -1,9 +1,6 @@
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'INSPECTOR', 'USER');
 
--- CreateEnum
-CREATE TYPE "PrinterModel" AS ENUM ('m3655idn', 'm2040dn', 'p6235cdn');
-
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -26,7 +23,7 @@ CREATE TABLE "Printer" (
     "serialNumber" TEXT,
     "hostname" TEXT,
     "ip" TEXT NOT NULL,
-    "model" "PrinterModel" NOT NULL,
+    "model" TEXT,
     "blackTonerModel" TEXT,
     "cyanTonerModel" TEXT,
     "magentaTonerModel" TEXT,

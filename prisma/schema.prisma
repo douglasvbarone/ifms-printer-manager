@@ -36,10 +36,10 @@ model Printer {
   friendlyName String?
   location     String?
 
-  serialNumber String?      @unique
+  serialNumber String? @unique
   hostname     String?
   ip           String
-  model        PrinterModel
+  model        String?
 
   blackTonerModel   String?
   cyanTonerModel    String?
@@ -50,12 +50,6 @@ model Printer {
   updatedAt DateTime @default(now()) @updatedAt
 
   PrinterStatus PrinterStatus[]
-}
-
-enum PrinterModel {
-  m3655idn
-  m2040dn
-  p6235cdn
 }
 
 model PrinterStatus {

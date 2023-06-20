@@ -8,31 +8,31 @@ async function main() {
       {
         friendlyName: 'P04',
         ip: '10.7.0.134',
-        model: 'm3655idn',
+        model: 'ECOSYS M3655idn',
         serialNumber: 'R4P1478461'
       },
       {
         friendlyName: 'P05',
         ip: '10.7.0.135',
-        model: 'm2040dn',
+        model: 'ECOSYS M2040dn',
         serialNumber: 'VR91483974'
       },
       {
         friendlyName: 'P06',
         ip: '10.7.0.136',
-        model: 'm2040dn',
+        model: 'ECOSYS M2040dn',
         serialNumber: 'VR91586433'
       },
       {
         friendlyName: 'P07',
         ip: '10.7.0.137',
-        model: 'm2040dn',
+        model: 'ECOSYS M2040dn',
         serialNumber: 'VR91586432'
       },
       {
         friendlyName: 'P08',
         ip: '10.7.0.138',
-        model: 'p6235cdn',
+        model: 'ECOSYS P6235cdn',
         serialNumber: 'RCG0304510'
       }
     ]
