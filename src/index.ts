@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
   console.log(
     `Running in ${
-      process.env.PRODUCTION ? 'PRODUCTION' : 'DEVELOPMENT'
+      process.env.NODE_ENV == 'production' ? 'PRODUCTION' : 'DEVELOPMENT'
     } mode. Server listening on port ${PORT}`
   )
 })
@@ -20,7 +20,7 @@ app.listen(PORT, () => {
 // Jobs
 const bree = new Bree({
   root: path.join(path.dirname(fileURLToPath(import.meta.url)), 'jobs'),
-  defaultExtension: process.env.PRODUCTION ? 'js' : 'ts',
+  defaultExtension: process.env.NODE_ENV == 'production' ? 'js' : 'ts',
   logger: false,
   jobs: [
     {
