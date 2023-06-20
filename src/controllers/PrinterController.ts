@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express'
 
 import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
+import { PrinterStatusService } from '../services/PrinterStatusService.js'
 
 const router = Router()
 
@@ -21,7 +22,7 @@ class PrinterController {
     const printer = await prisma.printer.findUnique({
       where: { id: Number(id) },
       include: {
-        PrinterStatus: {
+        status: {
           where: {
             createdAt: {
               gte
@@ -35,27 +36,44 @@ class PrinterController {
   }
 
   static async create(req: Request, res: Response) {
-    const { friendlyName, ip, location } = req.body
+    const { friendlyName, ip } = req.body
 
-    const printer = await prisma.printer.create({
-      data: { friendlyName, ip, location }
-    })
+    try {
+      const model = await PrinterStatusService.getPrinterModel(ip)
+      const printer = await prisma.printer.create({
+        data: { friendlyName, ip, model }
+      })
 
-    // Run snmp here
+      new PrinterStatusService(printer)
 
-    res.json(printer)
+      res.json(printer)
+    } catch (e) {
+      res
+        .status(400)
+        .json({ error: 'Este endereço não é de uma impressora suportada.' })
+      return
+    }
   }
 
   static async edit(req: Request, res: Response) {
     const { id } = req.params
-    const { friendlyName, ip, location } = req.body
+    const { friendlyName, ip } = req.body
 
-    const printer = await prisma.printer.update({
-      where: { id: Number(id) },
-      data: { friendlyName, ip, location }
+    // Verify if printer exists
+    const printerExists = await prisma.printer.findUnique({
+      where: { id: Number(id) }
     })
 
-    res.json(printer)
+    if (printerExists) {
+      const printer = await prisma.printer.update({
+        where: { id: Number(id) },
+        data: { friendlyName, ip }
+      })
+
+      res.json(printer)
+    } else {
+      res.status(400).json({ error: 'Printer not found' })
+    }
   }
 
   static async delete(req: Request, res: Response) {
@@ -70,7 +88,9 @@ class PrinterController {
 router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
 
 router.get('/', PrinterController.index)
+router.post('/', PrinterController.create)
 router.get('/:id', PrinterController.show)
 router.put('/:id', PrinterController.edit)
+router.delete('/:id', PrinterController.delete)
 
 export default router

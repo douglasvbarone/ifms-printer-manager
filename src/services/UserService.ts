@@ -14,12 +14,12 @@ export class UserService {
 
     if (!ldapUser) throw new Error('User not found!')
 
-    const user = {
+    const user: Omit<User, 'id' | 'createdAt' | 'updatedAt'> = {
       username: ldapUser.username,
       displayName: ldapUser.displayName,
       mail: ldapUser.mail,
       thumbnailPhoto: ldapUser.thumbnailPhoto,
-      roles: [] as User['roles']
+      roles: []
     }
 
     ldapUser.groups?.forEach(group => {

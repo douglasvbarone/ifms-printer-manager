@@ -38,8 +38,8 @@ model Printer {
 
   serialNumber String? @unique
   hostname     String?
-  ip           String
-  model        String?
+  ip           String  @unique
+  model        String
 
   blackTonerModel   String?
   cyanTonerModel    String?
@@ -49,7 +49,7 @@ model Printer {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  PrinterStatus PrinterStatus[]
+  status PrinterStatus[]
 }
 
 model PrinterStatus {
@@ -65,5 +65,5 @@ model PrinterStatus {
   createdAt DateTime @default(now())
 
   printerId Int
-  printer   Printer @relation(fields: [printerId], references: [id])
+  printer   Printer @relation(fields: [printerId], references: [id], onDelete: Cascade)
 }

@@ -23,7 +23,7 @@ CREATE TABLE "Printer" (
     "serialNumber" TEXT,
     "hostname" TEXT,
     "ip" TEXT NOT NULL,
-    "model" TEXT,
+    "model" TEXT NOT NULL,
     "blackTonerModel" TEXT,
     "cyanTonerModel" TEXT,
     "magentaTonerModel" TEXT,
@@ -53,6 +53,9 @@ CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Printer_serialNumber_key" ON "Printer"("serialNumber");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Printer_ip_key" ON "Printer"("ip");
 
 -- AddForeignKey
 ALTER TABLE "PrinterStatus" ADD CONSTRAINT "PrinterStatus_printerId_fkey" FOREIGN KEY ("printerId") REFERENCES "Printer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -1,6 +1,5 @@
 import 'dotenv/config'
 import * as path from 'node:path'
-import * as process from 'node:process'
 import { fileURLToPath } from 'node:url'
 
 import { app } from './server.js'
@@ -13,7 +12,7 @@ app.listen(PORT, () => {
   console.log(
     `Running in ${
       process.env.NODE_ENV == 'production' ? 'PRODUCTION' : 'DEVELOPMENT'
-    } mode. Server listening on port ${PORT}`
+    } mode. \nServer listening http://127.0.0.1:${PORT}`
   )
 })
 
@@ -24,8 +23,9 @@ const bree = new Bree({
   logger: false,
   jobs: [
     {
-      name: 'printerStatus',
-      interval: '2s'
+      name: 'updatePrinterStatus',
+      interval: process.env.UPDATE_INTERVAL || '10m',
+      timeout: 0
     }
   ]
 })
