@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express'
 
-import { hasRolesMiddleware } from '../middleware/hasRolesMiddleware.js'
+import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
 
 const router = Router()

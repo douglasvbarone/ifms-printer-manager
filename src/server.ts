@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
 
-import { populateUserMiddleware } from './middleware/populateUserMiddleware.js'
-import { authMiddleware } from './middleware/authMiddleware.js'
+import { populateUserMiddleware } from './middlewares/populateUserMiddleware.js'
+import { authMiddleware } from './middlewares/authMiddleware.js'
 
 import LoginRouter from './controllers/LoginController.js'
 import PrinterRouter from './controllers/PrinterController.js'
