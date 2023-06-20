@@ -34,6 +34,7 @@ model Printer {
   id Int @id @default(autoincrement())
 
   friendlyName String?
+  location     String?
 
   serialNumber String?      @unique
   hostname     String?

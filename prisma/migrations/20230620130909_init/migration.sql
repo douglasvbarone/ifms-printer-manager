@@ -22,6 +22,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Printer" (
     "id" SERIAL NOT NULL,
     "friendlyName" TEXT,
+    "location" TEXT,
     "serialNumber" TEXT,
     "hostname" TEXT,
     "ip" TEXT NOT NULL,

@@ -12,7 +12,7 @@ function getToken(req: Request) {
   return token
 }
 
-export async function injectUserMiddleware(
+export async function populateUserMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
