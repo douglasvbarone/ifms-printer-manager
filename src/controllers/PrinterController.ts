@@ -67,7 +67,7 @@ class PrinterController {
 
   static async edit(req: Request, res: Response) {
     const { id } = req.params
-    const { friendlyName, ip } = req.body
+    const { friendlyName } = req.body
 
     // Verify if printer exists
     const printerExists = await prisma.printer.findUnique({
@@ -77,7 +77,7 @@ class PrinterController {
     if (printerExists) {
       const printer = await prisma.printer.update({
         where: { id: Number(id) },
-        data: { friendlyName, ip }
+        data: { friendlyName }
       })
 
       res.json(printer)

@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express'
 import { prisma } from '../prisma.js'
 import { PrinterStatusService } from '../services/PrinterStatusService.js'
+import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 
 const router = Router()
 
@@ -15,6 +16,8 @@ class PrinterStatusController {
     res.json({ message: 'Updating printer status' })
   }
 }
+
+router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
 
 router.post('/update', PrinterStatusController.update)
 
