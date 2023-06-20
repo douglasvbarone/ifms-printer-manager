@@ -3,6 +3,7 @@ import { Request, Response, Router } from 'express'
 import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
 import { PrinterStatusService } from '../services/PrinterStatusService.js'
+import { distributedCopy } from '../utils/distributedCopy.js'
 
 const router = Router()
 
@@ -15,9 +16,9 @@ class PrinterController {
 
   static async show(req: Request, res: Response) {
     const { id } = req.params
+    const { take, minutes = 43200 } = req.query
 
-    // 30 days
-    const gte = new Date(Date.now() - 1000 * 60 * 60 * 24 * 30)
+    const gte = new Date(Date.now() - 1000 * 60 * Number(minutes))
 
     const printer = await prisma.printer.findUnique({
       where: { id: Number(id) },
@@ -27,12 +28,21 @@ class PrinterController {
             createdAt: {
               gte
             }
+          },
+
+          orderBy: {
+            createdAt: 'desc'
           }
         }
       }
     })
 
-    res.json(printer)
+    if (printer)
+      res.json({
+        ...printer,
+        status: distributedCopy(printer.status, Number(take))
+      })
+    else res.status(400).json({ error: 'Printer not found' })
   }
 
   static async create(req: Request, res: Response) {

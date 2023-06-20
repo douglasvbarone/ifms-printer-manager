@@ -16,5 +16,6 @@ class PrinterStatusController {
   }
 }
 
-router.get('/update', PrinterStatusController.update)
+router.post('/update', PrinterStatusController.update)
+
 export default router
