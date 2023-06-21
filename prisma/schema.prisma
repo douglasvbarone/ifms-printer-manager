@@ -26,6 +26,7 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+  campus    String?
 
   roles Role[] @default([USER])
 }
@@ -37,7 +38,6 @@ model Printer {
   location     String?
 
   serialNumber String? @unique
-  hostname     String?
   ip           String  @unique
   model        String
 
@@ -49,7 +49,9 @@ model Printer {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  status PrinterStatus[]
+  status    PrinterStatus[]
+  network   Network         @relation(fields: [networkId], references: [id])
+  networkId Int
 }
 
 model PrinterStatus {
@@ -62,8 +64,21 @@ model PrinterStatus {
 
   counter Int
 
-  createdAt DateTime @default(now())
+  timestamp DateTime @default(now())
 
   printerId Int
   printer   Printer @relation(fields: [printerId], references: [id], onDelete: Cascade)
+
+  @@index([timestamp])
+}
+
+model Network {
+  id        Int    @id @default(autoincrement())
+  name      String @unique
+  shortName String @unique
+  cidr      String @unique
+
+  printers Printer[]
+
+  @@index([id])
 }

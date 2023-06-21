@@ -4,6 +4,8 @@ import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
 import { PrinterStatusService } from '../services/PrinterStatusService.js'
 import { distributedCopy } from '../utils/distributedCopy.js'
+import { Netmask } from 'netmask'
+import { isIPv4 } from 'net'
 
 const router = Router()
 
@@ -16,22 +18,22 @@ class PrinterController {
 
   static async show(req: Request, res: Response) {
     const { id } = req.params
-    const { take, minutes = 43200 } = req.query
+    const { take = 64, days = 60 } = req.query
 
-    const gte = new Date(Date.now() - 1000 * 60 * Number(minutes))
+    const gte = new Date(Date.now() - 1000 * 60 * 60 * 24 * Number(days))
 
     const printer = await prisma.printer.findUnique({
       where: { id: Number(id) },
       include: {
         status: {
           where: {
-            createdAt: {
+            timestamp: {
               gte
             }
           },
 
           orderBy: {
-            createdAt: 'desc'
+            timestamp: 'desc'
           }
         }
       }
@@ -48,10 +50,24 @@ class PrinterController {
   static async create(req: Request, res: Response) {
     const { friendlyName, ip } = req.body
 
+    const ipBlock = new Netmask(ip)
+
+    if (!isIPv4(ip)) {
+      res.status(400).json({ error: 'Invalid IP' })
+      return
+    }
+
     try {
       const model = await PrinterStatusService.getPrinterModel(ip)
       const printer = await prisma.printer.create({
-        data: { friendlyName, ip, model }
+        data: {
+          friendlyName,
+          ip,
+          model,
+          network: {
+            connect: {}
+          }
+        }
       })
 
       new PrinterStatusService(printer)
@@ -60,7 +76,7 @@ class PrinterController {
     } catch (e) {
       res
         .status(400)
-        .json({ error: 'Este endereço não é de uma impressora suportada.' })
+        .json({ error: 'Este IP não é de uma impressora suportada.' })
       return
     }
   }

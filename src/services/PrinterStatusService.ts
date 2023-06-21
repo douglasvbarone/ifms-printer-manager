@@ -93,7 +93,7 @@ export class PrinterStatusService {
   private deBufferizeVarbinds(varbinds: Varbind[]) {
     const varbindsString: VarbindString[] = []
 
-    varbinds.forEach((varbind: Varbind) => {
+    varbinds?.forEach((varbind: Varbind) => {
       if (varbind.value instanceof Buffer)
         varbindsString.push({ ...varbind, value: varbind.value.toString() })
       else varbindsString.push({ ...varbind, value: varbind.value })
@@ -144,7 +144,7 @@ export class PrinterStatusService {
     if (typeof current === 'undefined' || typeof max === 'undefined')
       throw new Error('current or max is undefined')
 
-    return (+current! / +max!) * 100
+    return Math.floor((+current! / +max!) * 100)
   }
 
   private objectIDsToPrinterInfo(varbinds: Varbind[]): PrinterInfo {

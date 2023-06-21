@@ -16,6 +16,7 @@ type LdapUser = {
   displayName: string
   thumbnailPhoto: string | null
   groups?: string[]
+  campus?: string
 }
 
 export class LdapService extends Client implements LdapClientInterface {
@@ -56,7 +57,8 @@ export class LdapService extends Client implements LdapClientInterface {
           'sAMAccountName',
           'displayName',
           'thumbnailPhoto',
-          'dn'
+          'dn',
+          'extensionAttribute1'
         ],
         explicitBufferAttributes: ['thumbnailPhoto']
       })
@@ -64,8 +66,14 @@ export class LdapService extends Client implements LdapClientInterface {
       if (!searchEntries.length)
         throw new Error('User not found on LDAP server.')
 
-      const { sAMAccountName, displayName, mail, thumbnailPhoto, dn } =
-        searchEntries[0]
+      const {
+        sAMAccountName,
+        displayName,
+        mail,
+        thumbnailPhoto,
+        dn,
+        extensionAttribute1
+      } = searchEntries[0]
 
       const ldapUser: LdapUser = {
         username: sAMAccountName.toString(),
@@ -74,7 +82,8 @@ export class LdapService extends Client implements LdapClientInterface {
         thumbnailPhoto: `data:image/png;base64,${Buffer.from(
           thumbnailPhoto as Buffer
         ).toString('base64')}`,
-        groups: await this.getGroupsForUser(dn.toString())
+        groups: await this.getGroupsForUser(dn.toString()),
+        campus: extensionAttribute1?.toString().split('-')[0] || '--'
       }
 
       return ldapUser
