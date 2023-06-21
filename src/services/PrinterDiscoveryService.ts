@@ -1,5 +1,8 @@
 import snmp from 'net-snmp'
 import netmask from 'netmask'
+import { PrinterStatusService } from './PrinterStatusService.js'
+import { prisma } from '../prisma.js'
+import { Printer } from '@prisma/client'
 
 export class PrinterDiscoveryService {
   private static async isPrinter(ip: string) {
@@ -64,5 +67,46 @@ export class PrinterDiscoveryService {
     }
 
     return printers
+  }
+
+  static async discoverAll() {
+    const networks = await prisma.network.findMany()
+
+    const newPrinters: Printer[] = []
+    const discoveredPrintersIPs: string[] = []
+
+    for (const network of networks) {
+      console.log('Discovering printers for network', network.cidr)
+
+      try {
+        const discoveredPrintersIPsForNetwork =
+          await PrinterDiscoveryService.discovery(network.cidr)
+
+        discoveredPrintersIPs.push(...discoveredPrintersIPsForNetwork)
+      } catch (error) {
+        console.log(error)
+      }
+
+      const printers = await prisma.printer.findMany()
+
+      const newPrintersIPs = discoveredPrintersIPs.filter(
+        ip => !printers.find(printer => printer.ip === ip)
+      )
+
+      await Promise.allSettled(
+        newPrintersIPs.map(async ip => {
+          const model = await PrinterStatusService.getPrinterModel(ip)
+          const printer = await prisma.printer.create({
+            data: { ip, model, networkId: network.id }
+          })
+
+          new PrinterStatusService(printer)
+
+          newPrinters.push(printer)
+        })
+      )
+    }
+
+    return { discoveredPrintersIPs, newPrinters }
   }
 }
