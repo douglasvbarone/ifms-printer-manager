@@ -2,10 +2,8 @@ import { Request, Response, Router } from 'express'
 
 import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
-import { PrinterStatusService } from '../services/PrinterStatusService.js'
+
 import { distributedCopy } from '../utils/distributedCopy.js'
-import { Netmask } from 'netmask'
-import { isIPv4 } from 'net'
 
 const router = Router()
 
@@ -63,40 +61,6 @@ class PrinterController {
     else res.status(400).json({ error: 'Printer not found' })
   }
 
-  // static async create(req: Request, res: Response) {
-  //   const { friendlyName, ip } = req.body
-
-  //   const ipBlock = new Netmask(ip)
-
-  //   if (!isIPv4(ip)) {
-  //     res.status(400).json({ error: 'Invalid IP' })
-  //     return
-  //   }
-
-  //   try {
-  //     const model = await PrinterStatusService.getPrinterModel(ip)
-  //     const printer = await prisma.printer.create({
-  //       data: {
-  //         friendlyName,
-  //         ip,
-  //         model,
-  //         network: {
-  //           connect: {}
-  //         }
-  //       }
-  //     })
-
-  //     new PrinterStatusService(printer)
-
-  //     res.json(printer)
-  //   } catch (e) {
-  //     res
-  //       .status(400)
-  //       .json({ error: 'Este IP não é de uma impressora suportada.' })
-  //     return
-  //   }
-  // }
-
   static async edit(req: Request, res: Response) {
     const { id } = req.params
     const { friendlyName } = req.body
@@ -130,7 +94,6 @@ class PrinterController {
 router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
 
 router.get('/', PrinterController.index)
-// router.post('/', PrinterController.create)
 router.get('/:id', PrinterController.show)
 router.put('/:id', PrinterController.edit)
 router.delete('/:id', PrinterController.delete)
