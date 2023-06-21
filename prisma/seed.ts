@@ -109,13 +109,6 @@ async function main() {
         model: 'ECOSYS P6235cdn',
         serialNumber: 'RCG0304510',
         networkId: 8
-      },
-      {
-        friendlyName: 'PNA',
-        ip: '10.6.0.32',
-        model: 'ECOSYS M2040dn',
-        serialNumber: 'VR91586430',
-        networkId: 8
       }
     ]
   })
