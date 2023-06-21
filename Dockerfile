@@ -12,8 +12,6 @@ RUN cd web && yarn install && cd ..
 
 RUN npm run build
 
-RUN npx prisma db seed
-
 EXPOSE 3000
 
 CMD npx prisma migrate deploy && npm start
