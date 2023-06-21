@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD npm run prisma:deploy && npm start
+CMD npx prisma migrate deploy && npm start
