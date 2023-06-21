@@ -19,6 +19,7 @@ export class UserService {
       displayName: ldapUser.displayName,
       mail: ldapUser.mail,
       thumbnailPhoto: ldapUser.thumbnailPhoto,
+      campus: ldapUser.campus,
       roles: []
     }
 

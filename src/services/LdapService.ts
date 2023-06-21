@@ -14,9 +14,9 @@ type LdapUser = {
   username: string
   mail: string | null
   displayName: string
+  campus: string
   thumbnailPhoto: string | null
   groups?: string[]
-  campus?: string
 }
 
 export class LdapService extends Client implements LdapClientInterface {
