@@ -52,7 +52,7 @@ export class PrinterDiscoveryService {
           try {
             if (await PrinterDiscoveryService.isPrinter(ip)) {
               printers.push(ip)
-              console.log(`Found printer at ${ip}!`)
+              console.log(`Found printer at IP: ${ip}`)
             }
           } catch (error: any) {
             console.log(`Error checking ${ip}: ${error.message}`)
