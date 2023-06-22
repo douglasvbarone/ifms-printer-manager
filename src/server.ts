@@ -27,4 +27,8 @@ app.get('/api/me', authMiddleware, async (req: Request, res: Response) =>
   res.json(res.locals.user)
 )
 
-app.use('/*', express.static('public'))
+app.use('/', express.static('public'))
+
+app.get('*', (req, res) => {
+  res.sendFile('index.html', { root: './public' })
+})
