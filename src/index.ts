@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url'
 import { app } from './server.js'
 import Bree from 'bree'
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8000
 
 // Start server
 app.listen(PORT, () => {

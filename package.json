@@ -4,13 +4,18 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "workspaces": [
+    "web"
+  ],
   "scripts": {
     "clean": "rimraf ./dist ./public",
     "build:server": "npm run clean && tsc",
-    "build:web": "cd web && yarn run build",
+    "build:web": "npm run build -w web",
     "build": "npm run build:server && npm run build:web",
     "start": "NODE_ENV=production node dist",
-    "dev": "nodemon --ext js,ts,mts,mjs,json,prisma --exec \"tsx src/index.ts\"",
+    "dev": "concurrently --kill-others \"npm run dev:server\" \"npm run dev:web\"",
+    "dev:server": "nodemon --ext js,ts,mts,mjs,json,prisma --exec \"tsx src/index.ts\"",
+    "dev:web": "npm run dev -w web",
     "devLegacy": "NODE_OPTIONS=\"--loader ts-node/esm\" node ./src/index.ts"
   },
   "prisma": {
@@ -35,6 +40,7 @@
     "@types/netmask": "^2.0.1",
     "body-parser": "^1.20.2",
     "bree": "^9.1.3",
+    "concurrently": "^8.2.0",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
