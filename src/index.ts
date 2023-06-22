@@ -26,6 +26,10 @@ const bree = new Bree({
       name: 'updatePrinterStatus',
       interval: process.env.UPDATE_INTERVAL || '10m',
       timeout: 0
+    },
+    {
+      name: 'discoverPrinters',
+      cron: '0 */12 * * *'
     }
   ]
 })
