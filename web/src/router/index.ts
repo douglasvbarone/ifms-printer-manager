@@ -4,7 +4,13 @@ import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   {
     path: "/",
+    name: "Home",
     component: () => import(/* webpackChunkName: "home" */ "@/views/Home.vue"),
+  },
+  {
+    path: "/:pathMatch(.*)*",
+    name: "NotFound",
+    component: () => import(/* webpackChunkName: "home" */ "@/views/404.vue"),
   },
 ];
 
