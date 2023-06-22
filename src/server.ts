@@ -12,11 +12,11 @@ import PrinterDiscoveryRouter from './controllers/PrinterDiscoveryController.js'
 
 export const app = express()
 
-app.use(express.static('public'))
-
-app.use(bodyParser.json())
-app.use(populateUserMiddleware)
 app.use(loggerMiddleware)
+
+app.use('/api', bodyParser.json())
+
+app.use('/api', populateUserMiddleware)
 
 app.use('/api/login', LoginRouter)
 app.use('/api/printer', PrinterRouter)
@@ -26,3 +26,5 @@ app.use('/api/discovery', PrinterDiscoveryRouter)
 app.get('/api/me', authMiddleware, async (req: Request, res: Response) =>
   res.json(res.locals.user)
 )
+
+app.use('/*', express.static('public'))
