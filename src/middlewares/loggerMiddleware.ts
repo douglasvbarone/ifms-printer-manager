@@ -10,8 +10,8 @@ export async function loggerMiddleware(
     new Date().toLocaleString(),
     req.method,
     req.url,
-    res.locals.user.username,
-    res.locals.user.displayName
+    res.locals.user?.username,
+    res.locals.user?.displayName
   )
   next()
 }
