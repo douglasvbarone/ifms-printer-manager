@@ -2,9 +2,6 @@ import { Router, Request, Response } from 'express'
 
 import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { PrinterDiscoveryService } from '../services/PrinterDiscoveryService.js'
-import { prisma } from '../prisma.js'
-import { PrinterStatusService } from '../services/PrinterStatusService.js'
-import { Printer } from '@prisma/client'
 
 const router = Router()
 

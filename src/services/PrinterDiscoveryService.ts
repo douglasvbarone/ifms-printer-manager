@@ -96,8 +96,13 @@ export class PrinterDiscoveryService {
       await Promise.allSettled(
         newPrintersIPs.map(async ip => {
           const model = await PrinterStatusService.getPrinterModel(ip)
-          const printer = await prisma.printer.create({
-            data: { ip, model, networkId: network.id }
+          const serialNumber =
+            await PrinterStatusService.getPrinterSerialNumber(ip)
+
+          const printer = await prisma.printer.upsert({
+            where: { serialNumber },
+            create: { ip, model, networkId: network.id, serialNumber },
+            update: { ip, model, networkId: network.id }
           })
 
           new PrinterStatusService(printer)

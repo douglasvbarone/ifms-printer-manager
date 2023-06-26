@@ -37,8 +37,8 @@ model Printer {
   friendlyName String?
   location     String?
 
-  serialNumber String? @unique
-  ip           String  @unique
+  serialNumber String @unique
+  ip           String @unique
   model        String
 
   blackTonerModel   String?

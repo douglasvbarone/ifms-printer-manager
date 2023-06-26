@@ -1,5 +1,5 @@
 import snmp from 'net-snmp'
-import { Printer, PrinterStatus } from '@prisma/client'
+import { Printer } from '@prisma/client'
 import { prisma } from '../prisma.js'
 import {
   objectIdsRepository,
@@ -45,27 +45,28 @@ export type PrinterInfo = {
 export class PrinterStatusService {
   constructor(private printer: Printer) {
     this.getPrinterInfo().then(async printerStatus => {
-      await prisma.printer.update({
-        where: { id: this.printer.id },
-        data: {
-          serialNumber: printerStatus.serialNumber,
-          location: printerStatus.location,
-          blackTonerModel: printerStatus.toners.black.model,
-          cyanTonerModel: printerStatus.toners.cyan?.model,
-          magentaTonerModel: printerStatus.toners.magenta?.model,
-          yellowTonerModel: printerStatus.toners.yellow?.model,
+      if (this.printer.serialNumber)
+        await prisma.printer.update({
+          where: { serialNumber: this.printer.serialNumber },
+          data: {
+            serialNumber: printerStatus.serialNumber,
+            location: printerStatus.location,
+            blackTonerModel: printerStatus.toners.black.model,
+            cyanTonerModel: printerStatus.toners.cyan?.model,
+            magentaTonerModel: printerStatus.toners.magenta?.model,
+            yellowTonerModel: printerStatus.toners.yellow?.model,
 
-          status: {
-            create: {
-              counter: printerStatus.counter,
-              tonerBlackLevel: printerStatus.toners.black.level,
-              tonerCyanLevel: printerStatus.toners.cyan?.level,
-              tonerMagentaLevel: printerStatus.toners.magenta?.level,
-              tonerYellowLevel: printerStatus.toners.yellow?.level
+            status: {
+              create: {
+                counter: printerStatus.counter,
+                tonerBlackLevel: printerStatus.toners.black.level,
+                tonerCyanLevel: printerStatus.toners.cyan?.level,
+                tonerMagentaLevel: printerStatus.toners.magenta?.level,
+                tonerYellowLevel: printerStatus.toners.yellow?.level
+              }
             }
           }
-        }
-      })
+        })
     })
   }
 
@@ -107,6 +108,23 @@ export class PrinterStatusService {
       const snmpSession = snmp.createSession(ip, 'public')
       snmpSession.get(
         ['1.3.6.1.2.1.25.3.2.1.3.1'],
+        (error: any, varbinds: any) => {
+          if (error) {
+            reject(error)
+          } else {
+            resolve(varbinds[0].value.toString())
+          }
+          snmpSession.close()
+        }
+      )
+    })
+  }
+
+  static getPrinterSerialNumber(ip: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const snmpSession = snmp.createSession(ip, 'public')
+      snmpSession.get(
+        ['1.3.6.1.2.1.43.5.1.1.17.1'],
         (error: any, varbinds: any) => {
           if (error) {
             reject(error)
