@@ -4,14 +4,17 @@ WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
+
+COPY /web/package*.json ./web/
+
+RUN npm install -w web
+
 COPY . .
 
 RUN npx prisma generate
 
-RUN cd web && yarn install && cd ..
-
 RUN npm run build
 
-EXPOSE 3000
+EXPOSE 8000
 
 CMD npx prisma migrate deploy && npm start

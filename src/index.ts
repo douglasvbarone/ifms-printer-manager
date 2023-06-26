@@ -3,7 +3,7 @@ import 'dotenv/config'
 import { app } from './server.js'
 import { jobs } from './jobs.js'
 
-const PORT = process.env.PORT || 8000
+const PORT = 8000
 
 // Start server
 app.listen(PORT, () => {
