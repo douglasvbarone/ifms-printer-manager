@@ -19,7 +19,6 @@ export type Varbind = {
 }
 
 export type PrinterInfo = {
-  serialNumber: string
   counter: number
   location: string
   toners: {
@@ -44,7 +43,7 @@ export type PrinterInfo = {
 
 export class PrinterStatusService {
   constructor(private printer: Printer) {
-    this.getPrinterInfo().then(async printerStatus => {
+    this.getPrinterSnmpStatus().then(async printerStatus => {
       const lastStatus = await prisma.printerStatus.findFirst({
         where: { printerId: this.printer.id },
         orderBy: { timestamp: 'desc' }
@@ -157,7 +156,7 @@ export class PrinterStatusService {
     })
   }
 
-  async getPrinterInfo(): Promise<PrinterInfo> {
+  async getPrinterSnmpStatus(): Promise<PrinterInfo> {
     return new Promise((resolve, reject) => {
       const session = snmp.createSession(this.printer.ip, 'public')
 
@@ -167,9 +166,9 @@ export class PrinterStatusService {
         if (error) reject(error)
 
         const varbindsString = this.deBufferizeVarbinds(varbinds)
-        const info = this.objectIDsToPrinterInfo(varbindsString)
+        const snmpInfo = this.objectIDsToPrinterInfo(varbindsString)
 
-        resolve(info)
+        resolve(snmpInfo)
         session.close()
       })
     })
@@ -192,8 +191,6 @@ export class PrinterStatusService {
       objectIdsRepository.getPrinterObjectIds(this.printer.model)
 
     const printerInfo: PrinterInfo = {
-      serialNumber: snmpInfo.find(x => x.oid === objectIds.serialNumber)
-        ?.value as string,
       counter: Number(snmpInfo.find(x => x.oid === objectIds.counter)?.value),
       location: snmpInfo.find(x => x.oid === objectIds.location)
         ?.value as string,
