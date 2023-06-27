@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 
 import { populateUserMiddleware } from './middlewares/populateUserMiddleware.js'
 import { authMiddleware } from './middlewares/authMiddleware.js'
@@ -12,6 +13,7 @@ import PrinterDiscoveryRouter from './controllers/PrinterDiscoveryController.js'
 
 export const app = express()
 
+app.use(cors())
 app.use(loggerMiddleware)
 
 app.use('/api', bodyParser.json())

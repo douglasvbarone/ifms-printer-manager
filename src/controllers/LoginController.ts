@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express'
 import { AuthenticationService } from '../services/AuthenticationService.js'
+import { InvalidCredentialsError } from 'ldapts'
 
 const router = Router()
 
@@ -8,7 +9,7 @@ class LoginController {
     const { username, password } = req.body
 
     if (!username || !password) {
-      res.status(400).json({ error: 'Missing username or password' })
+      res.status(400).json({ error: 'Usuário e senha devem ser informados!' })
       return
     }
 
@@ -16,6 +17,10 @@ class LoginController {
       const token = await AuthenticationService.login(username, password)
       res.json({ token })
     } catch (error: any) {
+      if (error instanceof InvalidCredentialsError) {
+        res.status(401).json({ error: 'Usuário ou senha inválidos' })
+        return
+      }
       res.status(401).json({ error: error.message })
     }
   }
