@@ -11,13 +11,25 @@
         variant="solo"
         prepend-inner-icon="mdi-printer-search"
         clearable
+        v-model.lazy="appStore.printerFilter"
       />
-
+      <v-checkbox
+        class="ml-2"
+        v-model="appStore.onlyMyCampus"
+        @update:model-value="appStore.fetchPrinters"
+        color="primary"
+        :label="`Apenas ${appStore.me?.campus}`"
+        hide-details
+      />
       <v-spacer />
 
       <v-chip color="primary">
-        <v-avatar v-if="me?.thumbnailPhoto" :image="me?.thumbnailPhoto" start />
-        {{ me?.displayName }}
+        <v-avatar
+          v-if="appStore.me?.thumbnailPhoto"
+          :image="appStore.me?.thumbnailPhoto"
+          start
+        />
+        {{ appStore.me?.displayName }}
       </v-chip>
       <v-btn class="mx-2" @click="logout" icon size="small">
         <v-icon icon="mdi-logout"></v-icon>
@@ -31,18 +43,18 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from "@/store/app";
-import { removeJwtToken } from "@/auth";
+import { useAppStore } from "@/store/app"
+import { removeJwtToken } from "@/auth"
 
-import { useRouter } from "vue-router";
+import { useRouter } from "vue-router"
 
-const { me } = useAppStore();
+const appStore = useAppStore()
 
-const router = useRouter();
+const router = useRouter()
 
 function logout() {
-  removeJwtToken();
+  removeJwtToken()
 
-  router.push({ name: "Login" });
+  router.push({ name: "Login" })
 }
 </script>

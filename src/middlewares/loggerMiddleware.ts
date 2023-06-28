@@ -1,4 +1,4 @@
-import { Response, NextFunction, Request } from "express"
+import { Response, NextFunction, Request } from 'express'
 
 export async function loggerMiddleware(
   req: Request,
@@ -6,7 +6,7 @@ export async function loggerMiddleware(
   next: NextFunction
 ) {
   console.log(
-    "Request:",
+    'Request:',
     new Date().toLocaleString(),
     req.method,
     req.url,

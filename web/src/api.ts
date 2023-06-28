@@ -1,18 +1,18 @@
-const BASE_URL = process.env.BASE_URL || "http://localhost:8000/api/"
+const BASE_URL = process.env.BASE_URL || 'http://localhost:8000/api/'
 
 export async function api<T>(endpoint: string, options: any): Promise<T> {
-  const token = localStorage.getItem("token")
+  const token = localStorage.getItem('token')
 
   if (token) {
     options.headers = {
       ...options.headers,
-      Authorization: token,
+      Authorization: token
     }
   }
 
   options.headers = {
     ...options.headers,
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json'
   }
 
   const response = await fetch(BASE_URL + endpoint, options)

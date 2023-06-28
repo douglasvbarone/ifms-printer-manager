@@ -1,4 +1,4 @@
-const LOCAL_STORAGE_KEY = "token"
+const LOCAL_STORAGE_KEY = 'token'
 
 export function saveJwtToken(token: string) {
   localStorage.setItem(LOCAL_STORAGE_KEY, token)

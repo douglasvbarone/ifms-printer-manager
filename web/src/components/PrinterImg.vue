@@ -1,5 +1,5 @@
 <template>
-  <v-img height="300" :src="`/img/${model}.png`" />
+  <v-img :height="size" :src="`/img/${model}.png`" />
 </template>
 
 <script lang="ts" setup>
@@ -8,5 +8,9 @@ defineProps({
     type: String,
     required: true,
   },
-});
+  size: {
+    type: Number,
+    default: 128,
+  },
+})
 </script>

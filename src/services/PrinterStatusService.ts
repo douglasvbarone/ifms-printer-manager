@@ -1,10 +1,10 @@
-import snmp from "net-snmp"
-import { Printer } from "@prisma/client"
-import { prisma } from "../prisma.js"
+import snmp from 'net-snmp'
+import { Printer } from '@prisma/client'
+import { prisma } from '../prisma.js'
 import {
   objectIdsRepository,
-  PrinterObjectIds,
-} from "../repositories/ObjectIDRepository.js"
+  PrinterObjectIds
+} from '../repositories/ObjectIDRepository.js'
 
 type VarbindString = {
   oid: string
@@ -43,10 +43,10 @@ export type PrinterInfo = {
 
 export class PrinterStatusService {
   constructor(private printer: Printer) {
-    this.getPrinterSnmpStatus().then(async (printerStatus) => {
+    this.getPrinterSnmpStatus().then(async printerStatus => {
       const lastStatus = await prisma.printerStatus.findFirst({
         where: { printerId: this.printer.id },
-        orderBy: { timestamp: "desc" },
+        orderBy: { timestamp: 'desc' }
       })
 
       if (
@@ -58,7 +58,7 @@ export class PrinterStatusService {
       ) {
         await prisma.printerStatus.update({
           where: { id: lastStatus.id },
-          data: { timestamp: new Date() },
+          data: { timestamp: new Date() }
         })
       } else {
         console.log(
@@ -80,10 +80,10 @@ export class PrinterStatusService {
                 tonerBlackLevel: printerStatus.toners.black.level,
                 tonerCyanLevel: printerStatus.toners.cyan?.level,
                 tonerMagentaLevel: printerStatus.toners.magenta?.level,
-                tonerYellowLevel: printerStatus.toners.yellow?.level,
-              },
-            },
-          },
+                tonerYellowLevel: printerStatus.toners.yellow?.level
+              }
+            }
+          }
         })
       }
     })
@@ -94,7 +94,7 @@ export class PrinterStatusService {
 
     function extractObjValues(obj: any) {
       for (let key in obj) {
-        if (typeof obj[key] === "object") {
+        if (typeof obj[key] === 'object') {
           extractObjValues(obj[key])
         } else {
           const oID = obj[key]
@@ -124,9 +124,9 @@ export class PrinterStatusService {
 
   static getPrinterModel(ip: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const snmpSession = snmp.createSession(ip, "public")
+      const snmpSession = snmp.createSession(ip, 'public')
       snmpSession.get(
-        ["1.3.6.1.2.1.25.3.2.1.3.1"],
+        ['1.3.6.1.2.1.25.3.2.1.3.1'],
         (error: any, varbinds: any) => {
           if (error) {
             reject(error)
@@ -141,9 +141,9 @@ export class PrinterStatusService {
 
   static getPrinterSerialNumber(ip: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const snmpSession = snmp.createSession(ip, "public")
+      const snmpSession = snmp.createSession(ip, 'public')
       snmpSession.get(
-        ["1.3.6.1.2.1.43.5.1.1.17.1"],
+        ['1.3.6.1.2.1.43.5.1.1.17.1'],
         (error: any, varbinds: any) => {
           if (error) {
             reject(error)
@@ -158,7 +158,7 @@ export class PrinterStatusService {
 
   async getPrinterSnmpStatus(): Promise<PrinterInfo> {
     return new Promise((resolve, reject) => {
-      const session = snmp.createSession(this.printer.ip, "public")
+      const session = snmp.createSession(this.printer.ip, 'public')
 
       const oIDsArray = this.objectIdsArray()
 
@@ -178,8 +178,8 @@ export class PrinterStatusService {
     current: string | undefined,
     max: string | undefined
   ) {
-    if (typeof current === "undefined" || typeof max === "undefined")
-      throw new Error("current or max is undefined")
+    if (typeof current === 'undefined' || typeof max === 'undefined')
+      throw new Error('current or max is undefined')
 
     return Math.floor((+current! / +max!) * 100)
   }
@@ -191,60 +191,56 @@ export class PrinterStatusService {
       objectIdsRepository.getPrinterObjectIds(this.printer.model)
 
     const printerInfo: PrinterInfo = {
-      counter: Number(snmpInfo.find((x) => x.oid === objectIds.counter)?.value),
-      location: snmpInfo.find((x) => x.oid === objectIds.location)
+      counter: Number(snmpInfo.find(x => x.oid === objectIds.counter)?.value),
+      location: snmpInfo.find(x => x.oid === objectIds.location)
         ?.value as string,
       toners: {
         black: {
           level: this.calcTonerLevelPercentage(
-            snmpInfo.find((x) => x.oid === objectIds.toners.black.current)
-              ?.value,
-            snmpInfo.find((x) => x.oid === objectIds.toners.black.max)?.value
+            snmpInfo.find(x => x.oid === objectIds.toners.black.current)?.value,
+            snmpInfo.find(x => x.oid === objectIds.toners.black.max)?.value
           ),
-          model: snmpInfo.find((x) => x.oid === objectIds.toners.black.model)
-            ?.value as string,
+          model: snmpInfo.find(x => x.oid === objectIds.toners.black.model)
+            ?.value as string
         },
         cyan: objectIds.toners.cyan
           ? {
               level: this.calcTonerLevelPercentage(
-                snmpInfo.find((x) => x.oid === objectIds.toners.cyan?.current)
+                snmpInfo.find(x => x.oid === objectIds.toners.cyan?.current)
                   ?.value,
-                snmpInfo.find((x) => x.oid === objectIds.toners.cyan?.max)
-                  ?.value
+                snmpInfo.find(x => x.oid === objectIds.toners.cyan?.max)?.value
               ),
-              model: snmpInfo.find(
-                (x) => x.oid === objectIds.toners.cyan?.model
-              )?.value as string,
+              model: snmpInfo.find(x => x.oid === objectIds.toners.cyan?.model)
+                ?.value as string
             }
           : undefined,
         magenta: objectIds.toners.magenta
           ? {
               level: this.calcTonerLevelPercentage(
-                snmpInfo.find(
-                  (x) => x.oid === objectIds.toners.magenta?.current
-                )?.value,
-                snmpInfo.find((x) => x.oid === objectIds.toners.magenta?.max)
+                snmpInfo.find(x => x.oid === objectIds.toners.magenta?.current)
+                  ?.value,
+                snmpInfo.find(x => x.oid === objectIds.toners.magenta?.max)
                   ?.value
               ),
               model: snmpInfo.find(
-                (x) => x.oid === objectIds.toners.magenta?.model
-              )?.value as string,
+                x => x.oid === objectIds.toners.magenta?.model
+              )?.value as string
             }
           : undefined,
         yellow: objectIds.toners.yellow
           ? {
               level: this.calcTonerLevelPercentage(
-                snmpInfo.find((x) => x.oid === objectIds.toners.yellow?.current)
+                snmpInfo.find(x => x.oid === objectIds.toners.yellow?.current)
                   ?.value,
-                snmpInfo.find((x) => x.oid === objectIds.toners.yellow?.max)
+                snmpInfo.find(x => x.oid === objectIds.toners.yellow?.max)
                   ?.value
               ),
               model: snmpInfo.find(
-                (x) => x.oid === objectIds.toners.yellow?.model
-              )?.value as string,
+                x => x.oid === objectIds.toners.yellow?.model
+              )?.value as string
             }
-          : undefined,
-      },
+          : undefined
+      }
     }
 
     return printerInfo

@@ -1,10 +1,10 @@
-import jwt from "jsonwebtoken"
-import { prisma } from "../prisma.js"
-import { LdapService } from "./LdapService.js"
-import { UserService } from "./UserService.js"
-import { User } from "@prisma/client"
+import jwt from 'jsonwebtoken'
+import { prisma } from '../prisma.js'
+import { LdapService } from './LdapService.js'
+import { UserService } from './UserService.js'
+import { User } from '@prisma/client'
 
-const JWT_SECRET = process.env.JWT_SECRET || "secret"
+const JWT_SECRET = process.env.JWT_SECRET || 'secret'
 
 export class AuthenticationService {
   private constructor() {}
@@ -17,7 +17,7 @@ export class AuthenticationService {
     await UserService.importUser(username)
 
     const token = jwt.sign({ username }, JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN || "30 days",
+      expiresIn: process.env.JWT_EXPIRES_IN || '30 days'
     })
 
     return `Bearer ${token}`
@@ -28,7 +28,7 @@ export class AuthenticationService {
       const { username } = jwt.verify(token, JWT_SECRET) as { username: string }
 
       const user = await prisma.user.findUnique({
-        where: { username },
+        where: { username }
       })
 
       if (!user) return await UserService.importUser(username)

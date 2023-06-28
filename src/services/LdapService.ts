@@ -1,9 +1,9 @@
-import { Client } from "ldapts"
+import { Client } from 'ldapts'
 
-const DOMAIN = process.env.AD_DOMAIN || "IFMS"
-const DN = process.env.AD_DN || "DC=ifms,DC=edu,DC=br"
-const BIND_USER = process.env.AD_BIND_USER || ""
-const BIND_PASSWD = process.env.AD_BIND_PASSWORD || ""
+const DOMAIN = process.env.AD_DOMAIN || 'IFMS'
+const DN = process.env.AD_DN || 'DC=ifms,DC=edu,DC=br'
+const BIND_USER = process.env.AD_BIND_USER || ''
+const BIND_PASSWD = process.env.AD_BIND_PASSWORD || ''
 
 interface LdapClientInterface extends Client {
   authenticate(username: string, password: string): Promise<void>
@@ -26,7 +26,7 @@ export class LdapService extends Client implements LdapClientInterface {
     if (LdapService.instance) return LdapService.instance
 
     super({
-      url: `ldap://${process.env.AD_HOST}`,
+      url: `ldap://${process.env.AD_HOST}`
     })
 
     LdapService.instance = this
@@ -50,21 +50,21 @@ export class LdapService extends Client implements LdapClientInterface {
   async getUser(username: string): Promise<LdapUser> {
     return await this.adminBondOperation(async () => {
       const { searchEntries } = await this.search(DN, {
-        scope: "sub",
+        scope: 'sub',
         filter: `(sAMAccountName=${username})`,
         attributes: [
-          "mail",
-          "sAMAccountName",
-          "displayName",
-          "thumbnailPhoto",
-          "dn",
-          "extensionAttribute1",
+          'mail',
+          'sAMAccountName',
+          'displayName',
+          'thumbnailPhoto',
+          'dn',
+          'extensionAttribute1'
         ],
-        explicitBufferAttributes: ["thumbnailPhoto"],
+        explicitBufferAttributes: ['thumbnailPhoto']
       })
 
       if (!searchEntries.length)
-        throw new Error("User not found on LDAP server.")
+        throw new Error('User not found on LDAP server.')
 
       const {
         sAMAccountName,
@@ -72,7 +72,7 @@ export class LdapService extends Client implements LdapClientInterface {
         mail,
         thumbnailPhoto,
         dn,
-        extensionAttribute1,
+        extensionAttribute1
       } = searchEntries[0]
 
       const ldapUser: LdapUser = {
@@ -81,9 +81,9 @@ export class LdapService extends Client implements LdapClientInterface {
         mail: mail.toString(),
         thumbnailPhoto: `data:image/png;base64,${Buffer.from(
           thumbnailPhoto as Buffer
-        ).toString("base64")}`,
+        ).toString('base64')}`,
         groups: await this.getGroupsForUser(dn.toString()),
-        campus: extensionAttribute1?.toString().split("-")[0] || "--",
+        campus: extensionAttribute1?.toString().split('-')[0] || '--'
       }
 
       return ldapUser
@@ -92,14 +92,14 @@ export class LdapService extends Client implements LdapClientInterface {
 
   async getGroupsForUser(dn: string) {
     const { searchEntries } = await this.search(DN, {
-      scope: "sub",
+      scope: 'sub',
       filter: `(member:1.2.840.113556.1.4.1941:=${dn})`,
-      attributes: ["cn"],
+      attributes: ['cn']
     })
 
-    if (!searchEntries.length) throw new Error("User not found on LDAP server.")
+    if (!searchEntries.length) throw new Error('User not found on LDAP server.')
 
-    return searchEntries.map((entry) => entry.cn.toString())
+    return searchEntries.map(entry => entry.cn.toString())
   }
 
   async authenticate(username: string, password: string) {

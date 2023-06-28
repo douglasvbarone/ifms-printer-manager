@@ -1,7 +1,7 @@
-import { Router, Request, Response } from "express"
+import { Router, Request, Response } from 'express'
 
-import { hasRolesMiddleware } from "../middlewares/hasRolesMiddleware.js"
-import { PrinterDiscoveryService } from "../services/PrinterDiscoveryService.js"
+import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
+import { PrinterDiscoveryService } from '../services/PrinterDiscoveryService.js'
 
 const router = Router()
 
@@ -12,8 +12,8 @@ class PrinterDiscoveryController {
   }
 }
 
-router.use(hasRolesMiddleware(["ADMIN", "INSPECTOR"]))
+router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
 
-router.post("/", PrinterDiscoveryController.discovery)
+router.post('/', PrinterDiscoveryController.discovery)
 
 export default router

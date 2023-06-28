@@ -2,5 +2,9 @@
   "tabWidth": 2,
   "useTabs": false,
   "htmlWhitespaceSensitivity": "ignore",
-  "semi": false
+  "semi": false,
+  "trailingComma": "none",
+  "arrowParens": "avoid",
+  "singleQuote": true,
+  "vueIndentScriptAndStyle": false
 }
