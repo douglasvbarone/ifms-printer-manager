@@ -4,8 +4,4 @@
   </v-app>
 </template>
 
-<script lang="ts" setup>
-import { ref } from "vue";
-
-const drawer = ref(true);
-</script>
+<script lang="ts" setup></script>
