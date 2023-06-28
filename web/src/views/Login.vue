@@ -8,7 +8,7 @@
       v-model="valid"
     >
       <v-card :loading="loading">
-        <v-card-title class="mb-2 font-weight-regular"> Login </v-card-title>
+        <v-card-title class="mb-2 font-weight-regular">Login</v-card-title>
         <v-card-text>
           <v-text-field
             placeholder="SIAPE"

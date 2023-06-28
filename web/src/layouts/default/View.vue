@@ -15,11 +15,11 @@
 
       <v-spacer />
 
-      <v-chip variant="flat" color="primary">
+      <v-chip color="primary">
         <v-avatar v-if="me?.thumbnailPhoto" :image="me?.thumbnailPhoto" start />
         {{ me?.displayName }}
       </v-chip>
-      <v-btn class="ml-2" variant="text" @click="logout" icon size="small">
+      <v-btn class="mx-2" @click="logout" icon size="small">
         <v-icon icon="mdi-logout"></v-icon>
       </v-btn>
     </v-app-bar>
