@@ -62,9 +62,20 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import { api } from "@/api";
-import { saveJwtToken } from "@/auth";
+import { getJwtToken, saveJwtToken } from "@/auth";
 import { useRouter } from "vue-router";
 import { useAppStore } from "@/store/app";
+
+const router = useRouter();
+
+const token = getJwtToken();
+
+const { fetchMe } = useAppStore();
+
+if (token) {
+  fetchMe();
+  router.replace({ name: "Home" });
+}
 
 const username = ref<string>("");
 const password = ref<string>("");
@@ -73,10 +84,6 @@ const valid = ref(false);
 const errors = reactive<string[]>([]);
 
 const loading = ref(false);
-
-const router = useRouter();
-
-const { fetchMe } = useAppStore();
 
 async function login() {
   errors.splice(0, errors.length);

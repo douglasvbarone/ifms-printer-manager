@@ -1,4 +1,4 @@
-import { PrinterDiscoveryService } from '../services/PrinterDiscoveryService.js'
+import { PrinterDiscoveryService } from "../services/PrinterDiscoveryService.js"
 
 async function discoverPrinters() {
   console.log(`Discovering printers ${new Date().toLocaleString()}`)

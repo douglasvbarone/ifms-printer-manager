@@ -16,7 +16,8 @@
     "dev": "concurrently --kill-others -n Server,Web \"npm run dev:server\" \"npm run dev:web\"",
     "dev:server": "nodemon --ext js,ts,mts,mjs,json,prisma --exclude ./web/* --exec \"tsx src/index.ts\"",
     "dev:web": "npm run dev -w web",
-    "devLegacy": "NODE_OPTIONS=\"--loader ts-node/esm\" node ./src/index.ts"
+    "devLegacy": "NODE_OPTIONS=\"--loader ts-node/esm\" node ./src/index.ts",
+    "prettier": "prettier --write \"src/**/*.{js,ts,tsx,json,md}\" \"web/**/*.{js,ts,tsx,json,md}\""
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -29,6 +30,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.3.1",
     "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
     "prisma": "^4.15.0",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",

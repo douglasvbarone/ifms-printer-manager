@@ -1,9 +1,9 @@
-import { Request, Response, Router } from 'express'
+import { Request, Response, Router } from "express"
 
-import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
-import { prisma } from '../prisma.js'
+import { hasRolesMiddleware } from "../middlewares/hasRolesMiddleware.js"
+import { prisma } from "../prisma.js"
 
-import { distributedCopy } from '../utils/distributedCopy.js'
+import { distributedCopy } from "../utils/distributedCopy.js"
 
 const router = Router()
 
@@ -13,7 +13,7 @@ class PrinterController {
 
     if (!campus) {
       const printers = await prisma.printer.findMany({
-        include: { network: true }
+        include: { network: true },
       })
       return res.json(printers)
     }
@@ -21,10 +21,10 @@ class PrinterController {
     const printers = await prisma.printer.findMany({
       where: {
         network: {
-          shortName: String(campus)
-        }
+          shortName: String(campus),
+        },
       },
-      include: { network: true }
+      include: { network: true },
     })
 
     return res.json(printers)
@@ -42,23 +42,23 @@ class PrinterController {
         status: {
           where: {
             timestamp: {
-              gte
-            }
+              gte,
+            },
           },
 
           orderBy: {
-            timestamp: 'desc'
-          }
-        }
-      }
+            timestamp: "desc",
+          },
+        },
+      },
     })
 
     if (printer)
       res.json({
         ...printer,
-        status: distributedCopy(printer.status, Number(take))
+        status: distributedCopy(printer.status, Number(take)),
       })
-    else res.status(400).json({ error: 'Printer not found' })
+    else res.status(400).json({ error: "Printer not found" })
   }
 
   static async edit(req: Request, res: Response) {
@@ -67,18 +67,18 @@ class PrinterController {
 
     // Verify if printer exists
     const printerExists = await prisma.printer.findUnique({
-      where: { id: Number(id) }
+      where: { id: Number(id) },
     })
 
     if (printerExists) {
       const printer = await prisma.printer.update({
         where: { id: Number(id) },
-        data: { friendlyName }
+        data: { friendlyName },
       })
 
       res.json(printer)
     } else {
-      res.status(400).json({ error: 'Printer not found' })
+      res.status(400).json({ error: "Printer not found" })
     }
   }
 
@@ -87,15 +87,15 @@ class PrinterController {
 
     await prisma.printer.delete({ where: { id: Number(id) } })
 
-    res.json({ message: 'Printer deleted' })
+    res.json({ message: "Printer deleted" })
   }
 }
 
-router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
+router.use(hasRolesMiddleware(["ADMIN", "INSPECTOR"]))
 
-router.get('/', PrinterController.index)
-router.get('/:id', PrinterController.show)
-router.put('/:id', PrinterController.edit)
-router.delete('/:id', PrinterController.delete)
+router.get("/", PrinterController.index)
+router.get("/:id", PrinterController.show)
+router.put("/:id", PrinterController.edit)
+router.delete("/:id", PrinterController.delete)
 
 export default router

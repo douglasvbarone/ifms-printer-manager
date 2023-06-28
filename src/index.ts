@@ -1,7 +1,7 @@
-import 'dotenv/config'
+import "dotenv/config"
 
-import { app } from './server.js'
-import { jobs } from './jobs.js'
+import { app } from "./server.js"
+import { jobs } from "./jobs.js"
 
 const PORT = 8000
 
@@ -9,7 +9,7 @@ const PORT = 8000
 app.listen(PORT, () => {
   console.log(
     `Running in ${
-      process.env.NODE_ENV == 'production' ? 'PRODUCTION' : 'DEVELOPMENT'
+      process.env.NODE_ENV == "production" ? "PRODUCTION" : "DEVELOPMENT"
     } mode. \nServer listening http://127.0.0.1:${PORT}`
   )
 })

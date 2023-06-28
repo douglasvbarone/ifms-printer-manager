@@ -150,4 +150,4 @@ dev.db
 db/
 
 # Frontend build
-public/
+/public/

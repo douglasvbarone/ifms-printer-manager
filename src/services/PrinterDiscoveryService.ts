@@ -1,17 +1,17 @@
-import snmp from 'net-snmp'
-import netmask from 'netmask'
-import { PrinterStatusService } from './PrinterStatusService.js'
-import { prisma } from '../prisma.js'
-import { Printer } from '@prisma/client'
+import snmp from "net-snmp"
+import netmask from "netmask"
+import { PrinterStatusService } from "./PrinterStatusService.js"
+import { prisma } from "../prisma.js"
+import { Printer } from "@prisma/client"
 
 export class PrinterDiscoveryService {
   private static async isPrinter(ip: string) {
-    if (ip == '10.7.0.51') return false
+    if (ip == "10.7.0.51") return false
     return new Promise((resolve, reject) => {
-      const session = snmp.createSession(ip, 'public', { timeout: 1000 })
+      const session = snmp.createSession(ip, "public", { timeout: 1000 })
 
-      const CHECK_OID = '1.3.6.1.2.1.1.1.0'
-      const CHECK_STRING = 'KYOCERA Document Solutions Printing System'
+      const CHECK_OID = "1.3.6.1.2.1.1.1.0"
+      const CHECK_STRING = "KYOCERA Document Solutions Printing System"
 
       session.get(
         [CHECK_OID],
@@ -40,18 +40,18 @@ export class PrinterDiscoveryService {
     try {
       const block = new netmask.Netmask(cdir)
 
-      const BLACK_LISTED_IPS = ['10.7.1.1', '10.7.0.51']
+      const BLACK_LISTED_IPS = ["10.7.1.1", "10.7.0.51"]
 
-      block.forEach(ip => {
+      block.forEach((ip) => {
         if (!BLACK_LISTED_IPS.includes(ip)) blockIPs.push(ip)
       })
     } catch (err) {
-      throw new Error('Invalid IP CIDR')
+      throw new Error("Invalid IP CIDR")
     }
 
     try {
       await Promise.allSettled(
-        blockIPs.map(async ip => {
+        blockIPs.map(async (ip) => {
           try {
             if (await PrinterDiscoveryService.isPrinter(ip)) {
               printers.push(ip)
@@ -76,7 +76,7 @@ export class PrinterDiscoveryService {
     const discoveredPrintersIPs: string[] = []
 
     for (const network of networks) {
-      console.log('Discovering printers for network', network.cidr)
+      console.log("Discovering printers for network", network.cidr)
 
       try {
         const discoveredPrintersIPsForNetwork =
@@ -90,11 +90,11 @@ export class PrinterDiscoveryService {
       const printers = await prisma.printer.findMany()
 
       const newPrintersIPs = discoveredPrintersIPs.filter(
-        ip => !printers.find(printer => printer.ip === ip)
+        (ip) => !printers.find((printer) => printer.ip === ip)
       )
 
       await Promise.allSettled(
-        newPrintersIPs.map(async ip => {
+        newPrintersIPs.map(async (ip) => {
           const model = await PrinterStatusService.getPrinterModel(ip)
           const serialNumber =
             await PrinterStatusService.getPrinterSerialNumber(ip)
@@ -102,7 +102,7 @@ export class PrinterDiscoveryService {
           const printer = await prisma.printer.upsert({
             where: { serialNumber },
             create: { ip, model, networkId: network.id, serialNumber },
-            update: { ip, model, networkId: network.id }
+            update: { ip, model, networkId: network.id },
           })
 
           new PrinterStatusService(printer)
