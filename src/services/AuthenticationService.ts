@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import { prisma } from '../prisma.js'
 import { LdapService } from './LdapService.js'
 import { UserService } from './UserService.js'
+import { User } from '@prisma/client'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'secret'
 
@@ -16,13 +17,13 @@ export class AuthenticationService {
     await UserService.importUser(username)
 
     const token = jwt.sign({ username }, JWT_SECRET, {
-      expiresIn: '2 days'
+      expiresIn: process.env.JWT_EXPIRES_IN || '30 days'
     })
 
     return `Bearer ${token}`
   }
 
-  static async jwtAuth(token: string) {
+  static async jwtAuth(token: string): Promise<User> {
     try {
       const { username } = jwt.verify(token, JWT_SECRET) as { username: string }
 

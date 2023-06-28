@@ -5,7 +5,7 @@
     <v-app-bar>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-avatar rounded>
-        <v-img :src="me?.thumbnailPhoto" />
+        <v-img :src="me?.thumbnailPhoto || undefined" />
       </v-avatar>
       <v-toolbar-title>Application</v-toolbar-title>
     </v-app-bar>

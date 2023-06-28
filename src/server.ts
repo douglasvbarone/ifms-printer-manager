@@ -25,10 +25,6 @@ app.use('/api/printer', PrinterRouter)
 app.use('/api/printer-status', PrinterStatusRouter)
 app.use('/api/discovery', PrinterDiscoveryRouter)
 
-app.get('/api/me', authMiddleware, async (req: Request, res: Response) =>
-  res.json(res.locals.user)
-)
-
 app.use('/', express.static('public'))
 
 app.get('*', (req, res) => {

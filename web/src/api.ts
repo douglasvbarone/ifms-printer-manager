@@ -1,6 +1,6 @@
 const BASE_URL = process.env.BASE_URL || "http://localhost:8000/api/";
 
-export async function api(endpoint: string, options: any) {
+export async function api<T>(endpoint: string, options: any): Promise<T> {
   const token = localStorage.getItem("token");
 
   if (token) {

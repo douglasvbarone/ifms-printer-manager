@@ -80,7 +80,7 @@ async function login() {
 
   try {
     loading.value = true;
-    const data = await api("login", {
+    const data = await api<{ token: string }>("login", {
       method: "POST",
       body: JSON.stringify({
         username: username.value,

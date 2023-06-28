@@ -1,6 +1,7 @@
 import { Request, Response, Router } from 'express'
 import { AuthenticationService } from '../services/AuthenticationService.js'
 import { InvalidCredentialsError } from 'ldapts'
+import { User } from '@prisma/client'
 
 const router = Router()
 
@@ -24,8 +25,13 @@ class LoginController {
       res.status(401).json({ error: error.message })
     }
   }
+
+  static async me(req: Request, res: Response) {
+    res.json(res.locals.user as User)
+  }
 }
 
 router.post('/', LoginController.login)
+router.get('/me', LoginController.me)
 
 export default router
