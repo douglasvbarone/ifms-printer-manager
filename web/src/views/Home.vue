@@ -1,28 +1,29 @@
 <template>
-  <v-card
-    class="ma-1"
-    v-for="printer in appStore.filteredPrinters"
-    :key="printer.id"
-  >
-    <v-card-title class="font-weight-regular">
-      {{ printer.friendlyName || printer.serialNumber }}
-    </v-card-title>
-    <v-card-text>
-      <printer-img :model="printer.model" />
-    </v-card-text>
-  </v-card>
+  <v-container fluid>
+    <v-row>
+      <v-col
+        cols="12"
+        md="6"
+        lg="4"
+        v-for="printer in appStore.printers"
+        :key="printer.id"
+      >
+        <printer-card :printer="printer" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
-import PrinterImg from "@/components/PrinterImg.vue"
+import PrinterCard from '@/components/PrinterCard.vue'
+import { useAppStore } from '@/store/app'
 
-import { useAppStore } from "@/store/app"
-
-import { onMounted } from "vue"
+import { onMounted } from 'vue'
 
 const appStore = useAppStore()
 
-onMounted(() => {
-  appStore.fetchPrinters()
+onMounted(async () => {
+  await appStore.fetchMe()
+  await appStore.fetchPrinters()
 })
 </script>

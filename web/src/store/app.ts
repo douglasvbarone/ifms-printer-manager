@@ -11,17 +11,25 @@ export const useAppStore = defineStore('app', {
     me: null as User | null,
     printers: [] as Printer[],
     printerFilter: '',
-    onlyMyCampus: true
+    onlyMyCampus: true,
+    loadingPrinters: false
   }),
 
   actions: {
     async fetchPrinters() {
-      this.printers = await api<Printer[]>(
-        `printer?${new URLSearchParams({
-          campus: this.onlyMyCampus ? this.me?.campus || '' : ''
-        })}`,
-        { method: 'GET' }
-      )
+      this.loadingPrinters = true
+      try {
+        this.printers = await api<Printer[]>(
+          `printer?${new URLSearchParams({
+            campus: this.onlyMyCampus ? this.me?.campus || '' : ''
+          })}`,
+          { method: 'GET' }
+        )
+      } catch (error) {
+        console.error(error)
+      } finally {
+        this.loadingPrinters = false
+      }
     },
 
     async fetchMe() {

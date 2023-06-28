@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <v-app-bar :elevation="0">
       <v-text-field
         class="ml-2"
@@ -13,6 +13,7 @@
         clearable
         v-model.lazy="appStore.printerFilter"
       />
+
       <v-checkbox
         class="ml-2"
         v-model="appStore.onlyMyCampus"
@@ -43,10 +44,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from "@/store/app"
-import { removeJwtToken } from "@/auth"
+import { useAppStore } from '@/store/app'
+import { removeJwtToken } from '@/auth'
 
-import { useRouter } from "vue-router"
+import { useRouter } from 'vue-router'
 
 const appStore = useAppStore()
 
@@ -55,6 +56,6 @@ const router = useRouter()
 function logout() {
   removeJwtToken()
 
-  router.push({ name: "Login" })
+  router.push({ name: 'Login' })
 }
 </script>
