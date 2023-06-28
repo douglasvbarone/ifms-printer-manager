@@ -14,7 +14,7 @@
     "build": "npm run build:server && npm run build:web",
     "start": "NODE_ENV=production node dist",
     "dev": "concurrently --kill-others -n Server,Web \"npm run dev:server\" \"npm run dev:web\"",
-    "dev:server": "nodemon --ext js,ts,mts,mjs,json,prisma --exec \"tsx src/index.ts\"",
+    "dev:server": "nodemon --ext js,ts,mts,mjs,json,prisma --exclude ./web/* --exec \"tsx src/index.ts\"",
     "dev:web": "npm run dev -w web",
     "devLegacy": "NODE_OPTIONS=\"--loader ts-node/esm\" node ./src/index.ts"
   },

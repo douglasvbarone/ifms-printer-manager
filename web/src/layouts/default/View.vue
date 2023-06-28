@@ -1,36 +1,27 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer">
-      <v-list>
-        <v-list-item>
-          <template v-slot:prepend>
-            <v-avatar :image="me?.thumbnailPhoto || undefined" />
-          </template>
-          <v-list-item-title>{{ me?.displayName }}</v-list-item-title>
-          <v-list-item-subtitle>
-            {{ me?.campus }}
-          </v-list-item-subtitle>
-        </v-list-item>
-      </v-list>
-      <template v-slot:append>
-        <div class="pa-2">
-          <v-btn block variant="text" @click="logout">
-            <template v-slot:prepend>
-              <v-icon icon="mdi-logout"></v-icon>
-            </template>
-            Logout
-          </v-btn>
-        </div>
-      </template>
-    </v-navigation-drawer>
+    <v-app-bar :elevation="0">
+      <v-text-field
+        class="ml-2"
+        density="compact"
+        style="max-width: 350px"
+        placeholder="Pesquisar"
+        hide-details
+        rounded
+        variant="solo"
+        prepend-inner-icon="mdi-printer-search"
+        clearable
+      />
 
-    <v-app-bar>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
-      <v-toolbar-title
-        ><v-icon icon="mdi-printer" /> Impressoras</v-toolbar-title
-      >
       <v-spacer />
+
+      <v-chip variant="flat" color="primary">
+        <v-avatar v-if="me?.thumbnailPhoto" :image="me?.thumbnailPhoto" start />
+        {{ me?.displayName }}
+      </v-chip>
+      <v-btn class="ml-2" variant="text" @click="logout" icon size="small">
+        <v-icon icon="mdi-logout"></v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -40,16 +31,12 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
-
 import { useAppStore } from "@/store/app";
 import { removeJwtToken } from "@/auth";
 
 import { useRouter } from "vue-router";
 
 const { me } = useAppStore();
-
-const drawer = ref(true);
 
 const router = useRouter();
 
