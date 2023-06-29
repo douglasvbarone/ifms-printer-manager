@@ -1,13 +1,7 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col
-        cols="12"
-        md="6"
-        lg="4"
-        v-for="printer in appStore.printers"
-        :key="printer.id"
-      >
+      <v-col cols="12" v-for="printer in appStore.printers" :key="printer.id">
         <printer-card :printer="printer" />
       </v-col>
     </v-row>
@@ -16,7 +10,7 @@
 
 <script lang="ts" setup>
 import PrinterCard from '@/components/PrinterCard.vue'
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/appStore'
 
 import { onMounted } from 'vue'
 
@@ -27,3 +21,4 @@ onMounted(async () => {
   await appStore.fetchPrinters()
 })
 </script>
+@/store/appStore

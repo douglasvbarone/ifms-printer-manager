@@ -2,14 +2,14 @@
 import { defineStore } from 'pinia'
 import { api } from '@/api'
 import { useRouter } from 'vue-router'
-import { Printer, User } from '@prisma/client'
+import type { Printer, User, Network } from '@prisma/client'
 
 const router = useRouter()
 
 export const useAppStore = defineStore('app', {
   state: () => ({
     me: null as User | null,
-    printers: [] as Printer[],
+    printers: [] as any[],
     printerFilter: '',
     onlyMyCampus: true,
     loadingPrinters: false
@@ -19,7 +19,7 @@ export const useAppStore = defineStore('app', {
     async fetchPrinters() {
       this.loadingPrinters = true
       try {
-        this.printers = await api<Printer[]>(
+        this.printers = await api<any[]>(
           `printer?${new URLSearchParams({
             campus: this.onlyMyCampus ? this.me?.campus || '' : ''
           })}`,

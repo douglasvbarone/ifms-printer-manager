@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/appStore'
 import { removeJwtToken } from '@/auth'
 
 import { useRouter } from 'vue-router'
@@ -59,3 +59,4 @@ function logout() {
   router.push({ name: 'Login' })
 }
 </script>
+@/store/appStore

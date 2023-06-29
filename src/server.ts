@@ -14,11 +14,10 @@ import PrinterDiscoveryRouter from './controllers/PrinterDiscoveryController.js'
 export const app = express()
 
 app.use(cors())
+app.use(populateUserMiddleware)
 app.use(loggerMiddleware)
 
 app.use('/api', bodyParser.json())
-
-app.use('/api', populateUserMiddleware)
 
 app.use('/api/login', LoginRouter)
 app.use('/api/printer', PrinterRouter)

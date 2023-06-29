@@ -24,7 +24,13 @@ class PrinterController {
           shortName: String(campus)
         }
       },
-      include: { network: true }
+      include: {
+        network: true,
+        status: {
+          orderBy: { timestamp: 'desc' },
+          take: 1
+        }
+      }
     })
 
     return res.json(printers)
@@ -32,7 +38,7 @@ class PrinterController {
 
   static async show(req: Request, res: Response) {
     const { id } = req.params
-    const { take = 64, days = 60 } = req.query
+    const { take = 32, days = 60 } = req.query
 
     const gte = new Date(Date.now() - 1000 * 60 * 60 * 24 * Number(days))
 

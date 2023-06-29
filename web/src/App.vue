@@ -5,9 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import { useAppStore } from "./store/app";
+import { useAppStore } from './store/appStore'
 
-const appStore = useAppStore();
+const appStore = useAppStore()
 
-appStore.fetchMe();
+appStore.fetchMe()
 </script>
+./store/appStore

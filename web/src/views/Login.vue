@@ -60,55 +60,56 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
-import { api } from "@/api";
-import { getJwtToken, saveJwtToken } from "@/auth";
-import { useRouter } from "vue-router";
-import { useAppStore } from "@/store/app";
+import { ref, reactive } from 'vue'
+import { api } from '@/api'
+import { getJwtToken, saveJwtToken } from '@/auth'
+import { useRouter } from 'vue-router'
+import { useAppStore } from '@/store/app'
 
-const router = useRouter();
+const router = useRouter()
 
-const token = getJwtToken();
+const token = getJwtToken()
 
-const { fetchMe } = useAppStore();
+const { fetchMe } = useAppStore()
 
 if (token) {
-  fetchMe();
-  router.replace({ name: "Home" });
+  fetchMe()
+  router.replace({ name: 'Home' })
 }
 
-const username = ref<string>("");
-const password = ref<string>("");
+const username = ref<string>('')
+const password = ref<string>('')
 
-const valid = ref(false);
-const errors = reactive<string[]>([]);
+const valid = ref(false)
+const errors = reactive<string[]>([])
 
-const loading = ref(false);
+const loading = ref(false)
 
 async function login() {
-  errors.splice(0, errors.length);
+  errors.splice(0, errors.length)
 
   try {
-    loading.value = true;
-    const data = await api<{ token: string }>("login", {
-      method: "POST",
+    loading.value = true
+    const data = await api<{ token: string }>('login', {
+      method: 'POST',
       body: JSON.stringify({
         username: username.value,
-        password: password.value,
-      }),
-    });
+        password: password.value
+      })
+    })
 
-    const token = data.token;
+    const token = data.token
 
-    saveJwtToken(token);
+    saveJwtToken(token)
 
-    await fetchMe();
+    await fetchMe()
 
-    router.push({ name: "Home" });
+    router.push({ name: 'Home' })
   } catch (error: any) {
-    errors.push(error.message);
+    errors.push(error.message)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 </script>
+@/store/appStore
