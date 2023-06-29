@@ -1,5 +1,11 @@
 <template>
   <v-app>
+    <v-progress-linear
+      v-if="appStore.loadingPrinters"
+      style="position: fixed; z-index: 9999"
+      color="primary"
+      indeterminate
+    />
     <v-app-bar :elevation="0">
       <v-text-field
         class="ml-2"
