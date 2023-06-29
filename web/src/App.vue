@@ -1,7 +1,7 @@
 <template>
   <div class="alpha-banner py-1 px-3 bg-amber text-black">
     <v-icon size="small" icon="mdi-bug" />
-    Em desenvolvimento! Versão 0.0.0.½ Alpha
+    Em desenvolvimento! Versão 0.0.0.½ Alpha Gambiarra
   </div>
   <v-app>
     <v-main><RouterView /></v-main>

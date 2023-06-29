@@ -2,7 +2,8 @@
   <v-container fluid>
     <v-row>
       <v-col
-        cols="6"
+        cols="12"
+        lg="6"
         v-for="printer in appStore.filteredPrinters"
         :key="printer.id"
       >
