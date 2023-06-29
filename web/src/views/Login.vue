@@ -64,7 +64,7 @@ import { ref, reactive } from 'vue'
 import { api } from '@/api'
 import { getJwtToken, saveJwtToken } from '@/auth'
 import { useRouter } from 'vue-router'
-import { useAppStore } from '@/store/app'
+import { useAppStore } from '@/store/appStore'
 
 const router = useRouter()
 
