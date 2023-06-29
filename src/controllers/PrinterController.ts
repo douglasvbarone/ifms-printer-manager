@@ -13,7 +13,13 @@ class PrinterController {
 
     if (!campus) {
       const printers = await prisma.printer.findMany({
-        include: { network: true }
+        include: {
+          network: true,
+          status: {
+            orderBy: { timestamp: 'desc' },
+            take: 1
+          }
+        }
       })
       return res.json(printers)
     }
