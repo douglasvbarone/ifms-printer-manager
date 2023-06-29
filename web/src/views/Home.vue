@@ -1,7 +1,11 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="6" v-for="printer in appStore.printers" :key="printer.id">
+      <v-col
+        cols="6"
+        v-for="printer in appStore.filteredPrinters"
+        :key="printer.id"
+      >
         <printer-card :printer="printer" />
       </v-col>
     </v-row>
@@ -21,4 +25,3 @@ onMounted(async () => {
   await appStore.fetchPrinters()
 })
 </script>
-@/store/appStore

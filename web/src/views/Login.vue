@@ -112,4 +112,3 @@ async function login() {
   }
 }
 </script>
-@/store/appStore

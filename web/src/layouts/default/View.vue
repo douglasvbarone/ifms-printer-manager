@@ -65,4 +65,3 @@ function logout() {
   router.push({ name: 'Login' })
 }
 </script>
-@/store/appStore
