@@ -19,7 +19,8 @@ class PrinterController {
             orderBy: { timestamp: 'desc' },
             take: 1
           }
-        }
+        },
+        orderBy: { network: { cidr: 'asc' } }
       })
       return res.json(printers)
     }
@@ -36,7 +37,8 @@ class PrinterController {
           orderBy: { timestamp: 'desc' },
           take: 1
         }
-      }
+      },
+      orderBy: { network: { cidr: 'asc' } }
     })
 
     return res.json(printers)
