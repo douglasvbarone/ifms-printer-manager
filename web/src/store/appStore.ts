@@ -2,9 +2,7 @@
 import { defineStore } from 'pinia'
 import { api } from '@/api'
 import { useRouter } from 'vue-router'
-import type { Printer, User, Network } from '@prisma/client'
-
-const router = useRouter()
+import type { Printer, User } from '@prisma/client'
 
 export const useAppStore = defineStore('app', {
   state: () => ({
@@ -33,6 +31,8 @@ export const useAppStore = defineStore('app', {
     },
 
     async fetchMe() {
+      const router = useRouter()
+
       try {
         this.me = await api<User>('login/me', { method: 'GET' })
       } catch (error) {
