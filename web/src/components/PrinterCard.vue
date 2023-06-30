@@ -28,7 +28,12 @@
           </v-list-item>
           <v-list-item>
             <v-list-item-title>
-              {{ new Date(printer.updatedAt).toLocaleString() }}
+              {{
+                new Intl.DateTimeFormat('pt-BR', {
+                  dateStyle: 'short',
+                  timeStyle: 'short'
+                }).format(new Date(printer.status[0].timestamp))
+              }}
             </v-list-item-title>
             <v-list-item-subtitle>Última atualização</v-list-item-subtitle>
           </v-list-item>
