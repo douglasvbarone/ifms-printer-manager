@@ -2,6 +2,13 @@
   <v-card variant="outlined" class="printer-card">
     <div class="d-flex align-center">
       <div class="flex-shrink-1 fill-height" style="width: 128px">
+        <v-icon
+          v-if="printerAlert"
+          class="ma-1 alert"
+          color="warning"
+          icon="mdi-alert"
+          size="large"
+        />
         <printer-img class="pa-2" :model="printer.model" />
       </div>
       <div>
@@ -161,14 +168,33 @@
 </template>
 <script lang="ts" setup>
 import PrinterImg from '@/components/PrinterImg.vue'
+import { computed } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   printer: any
 }>()
+
+const printerAlert = computed(() => {
+  return (
+    props.printer.status[0].tonerBlackLevel < 10 ||
+    (props.printer.cyanTonerModel &&
+      props.printer.status[0].tonerCyanLevel < 10) ||
+    (props.printer.magentaTonerModel &&
+      props.printer.status[0].tonerMagentaLevel < 10) ||
+    (props.printer.yellowTonerModel &&
+      props.printer.status[0].tonerYellowLevel < 10)
+  )
+})
 </script>
 
 <style scoped>
 .printer-card {
   border-color: #efefef;
+}
+
+.alert {
+  position: absolute;
+  top: 0;
+  z-index: 99;
 }
 </style>

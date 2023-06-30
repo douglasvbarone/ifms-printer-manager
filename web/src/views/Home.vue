@@ -4,6 +4,7 @@
       <v-col
         cols="12"
         lg="6"
+        xxl="4"
         v-for="printer in appStore.filteredPrinters"
         :key="printer.id"
       >
