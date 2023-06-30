@@ -44,8 +44,6 @@ export const useAppStore = defineStore('app', {
     filteredPrinters(state): Printer[] {
       const filter = this.printerFilter?.trim()
 
-      console.log(filter)
-
       if (!filter) {
         return state.printers
       }
