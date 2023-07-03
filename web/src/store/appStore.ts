@@ -42,21 +42,20 @@ export const useAppStore = defineStore('app', {
   },
   getters: {
     filteredPrinters(state): Printer[] {
-      const filter = this.printerFilter?.trim()
+      const filter = this.printerFilter?.trim().toLowerCase()
 
       if (!filter) {
         return state.printers
       }
 
-      return state.printers.filter(printer => {
-        return (
-          printer.friendlyName?.toLowerCase().includes(filter.toLowerCase()) ||
-          printer.serialNumber.toLowerCase().includes(filter.toLowerCase()) ||
-          printer.model.toLowerCase().includes(filter.toLowerCase()) ||
-          printer.location?.toLowerCase().includes(filter.toLowerCase()) ||
-          printer.ip.toLowerCase().includes(filter.toLowerCase())
-        )
-      })
+      return state.printers.filter(
+        printer =>
+          printer.friendlyName?.toLowerCase().includes(filter) ||
+          printer.serialNumber.toLowerCase().includes(filter) ||
+          printer.model.toLowerCase().includes(filter) ||
+          printer.location?.toLowerCase().includes(filter) ||
+          printer.ip.toLowerCase().includes(filter)
+      )
     }
   }
 })
