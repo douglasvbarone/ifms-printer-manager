@@ -3,7 +3,6 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import { populateUserMiddleware } from './middlewares/populateUserMiddleware.js'
-import { authMiddleware } from './middlewares/authMiddleware.js'
 import { loggerMiddleware } from './middlewares/loggerMiddleware.js'
 
 import LoginRouter from './controllers/LoginController.js'
@@ -21,7 +20,7 @@ app.use('/api', bodyParser.json())
 
 app.use('/api/login', LoginRouter)
 app.use('/api/printer', PrinterRouter)
-app.use('/api/printer-status', PrinterStatusRouter)
+app.use('/api/status', PrinterStatusRouter)
 app.use('/api/discovery', PrinterDiscoveryRouter)
 
 app.use('/', express.static('public'))

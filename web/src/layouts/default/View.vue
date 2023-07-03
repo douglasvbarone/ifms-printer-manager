@@ -29,6 +29,14 @@
         hide-details
       />
       <v-spacer />
+      <v-btn
+        icon="mdi-refresh"
+        class="mr-1"
+        color="primary"
+        title="Atualizar"
+        @click="appStore.fetchPrinters"
+        :disabled="appStore.loadingPrinters"
+      ></v-btn>
 
       <v-chip color="primary">
         <v-avatar

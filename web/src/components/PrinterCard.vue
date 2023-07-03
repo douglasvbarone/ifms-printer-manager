@@ -1,7 +1,11 @@
 <template>
-  <v-card variant="outlined" class="printer-card">
-    <div class="d-flex align-center">
-      <div class="flex-shrink-1 fill-height" style="width: 128px">
+  <v-card
+    variant="outlined"
+    class="printer-card"
+    :to="{ name: 'Printer', params: { id: printer.id } }"
+  >
+    <v-row no-gutters wrap>
+      <v-col cols="2" align-self="center">
         <v-icon
           v-if="printerAlert"
           class="ma-1 alert"
@@ -10,8 +14,8 @@
           size="large"
         />
         <printer-img class="pa-2" :model="printer.model" />
-      </div>
-      <div>
+      </v-col>
+      <v-col cols="4">
         <v-list density="compact">
           <v-list-item>
             <v-list-item-title>{{ printer.serialNumber }}</v-list-item-title>
@@ -45,8 +49,8 @@
             <v-list-item-subtitle>Última atualização</v-list-item-subtitle>
           </v-list-item>
         </v-list>
-      </div>
-      <div class="flex-grow-1">
+      </v-col>
+      <v-col cols="6" align-self="center">
         <v-list density="compact">
           <v-list-item>
             <v-list-item-title>
@@ -162,12 +166,13 @@
             </v-list-item-subtitle>
           </v-list-item>
         </v-list>
-      </div>
-    </div>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 <script lang="ts" setup>
 import PrinterImg from '@/components/PrinterImg.vue'
+
 import { computed } from 'vue'
 
 const props = defineProps<{
@@ -189,7 +194,7 @@ const printerAlert = computed(() => {
 
 <style scoped>
 .printer-card {
-  border-color: #efefef;
+  border-color: #555;
 }
 
 .alert {
