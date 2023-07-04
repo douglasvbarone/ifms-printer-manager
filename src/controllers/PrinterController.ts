@@ -4,12 +4,24 @@ import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
 
 import { distributedCopy } from '../utils/distributedCopy.js'
+import { PrinterStatusService } from '../services/PrinterStatusService.js'
 
 const router = Router()
 
 class PrinterController {
   static async index(req: Request, res: Response) {
-    const { campus } = req.query
+    const { campus, force } = req.query
+
+    if (force) {
+      const printers = await prisma.printer.findMany()
+      console.log(`Updating printers status ${new Date().toLocaleString()}`)
+
+      Promise.allSettled(
+        printers.map(async printer => {
+          new PrinterStatusService(printer)
+        })
+      )
+    }
 
     if (campus == 'RT') {
       const printers = await prisma.printer.findMany({

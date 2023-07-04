@@ -40,7 +40,7 @@
         class="mr-1"
         color="primary"
         title="Atualizar"
-        @click="appStore.fetchPrinters"
+        @click="appStore.fetchPrinters(true)"
         :disabled="appStore.loadingPrinters"
       ></v-btn>
 

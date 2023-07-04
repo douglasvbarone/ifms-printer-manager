@@ -14,12 +14,13 @@ export const useAppStore = defineStore('app', {
   }),
 
   actions: {
-    async fetchPrinters() {
+    async fetchPrinters(force = false) {
       this.loadingPrinters = true
       try {
         this.printers = await api<any[]>(
           `printer?${new URLSearchParams({
-            campus: this.selectedCampus
+            campus: this.selectedCampus,
+            force: force ? 'true' : ''
           })}`,
           { method: 'GET' }
         )
