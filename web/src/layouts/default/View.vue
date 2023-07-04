@@ -129,5 +129,7 @@ function logout() {
   removeJwtToken()
 
   router.push({ name: 'Login' })
+
+  appStore.me = null
 }
 </script>

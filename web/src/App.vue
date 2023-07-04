@@ -29,6 +29,7 @@ onMounted(async () => {
     console.log('Not logged in')
     router.replace({ name: 'Login' })
   }
+
   appStore.selectedCampus = appStore.me?.campus || ''
 })
 </script>

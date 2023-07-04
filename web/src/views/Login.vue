@@ -99,6 +99,8 @@ async function login() {
 
     await appStore.fetchMe()
 
+    appStore.selectedCampus = appStore.me?.campus || ''
+
     router.push({ name: 'Home' })
   } catch (error: any) {
     errors.push(error.message)
