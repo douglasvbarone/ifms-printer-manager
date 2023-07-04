@@ -7,10 +7,24 @@
       indeterminate
     />
     <v-app-bar :elevation="0">
+      <v-select
+        class="ml-2"
+        :items="campiSelectItems"
+        v-model="appStore.selectedCampus"
+        @update:model-value="appStore.fetchPrinters"
+        hide-details
+        center-affix
+        variant="solo"
+        density="compact"
+        style="max-width: 200px"
+        prepend-inner-icon="mdi-domain"
+        label="Campus"
+        rounded
+      />
       <v-text-field
         class="ml-2"
         density="compact"
-        style="max-width: 350px"
+        style="max-width: 200px"
         placeholder="Pesquisar"
         hide-details
         rounded
@@ -20,19 +34,6 @@
         v-model.lazy="appStore.printerFilter"
       />
 
-      <v-select
-        class="ml-3"
-        :items="campiSelectItems"
-        v-model="appStore.selectedCampus"
-        @update:model-value="appStore.fetchPrinters"
-        hide-details
-        variant="solo"
-        density="compact"
-        style="max-width: 200px"
-        prepend-inner-icon="mdi-domain"
-        label="Campus"
-        rounded
-      />
       <v-spacer />
       <v-btn
         icon="mdi-refresh"
