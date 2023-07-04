@@ -41,7 +41,7 @@ const routes = [
     component: () => import('@/layouts/single/Default.vue'),
     children: [
       {
-        path: ':serialNumber',
+        path: '',
         name: 'Printer',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route

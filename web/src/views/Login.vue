@@ -62,20 +62,15 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue'
 import { api } from '@/api'
-import { getJwtToken, saveJwtToken } from '@/auth'
+import { saveJwtToken } from '@/auth'
 import { useRouter } from 'vue-router'
 import { useAppStore } from '@/store/appStore'
 
+const appStore = useAppStore()
+
 const router = useRouter()
 
-const token = getJwtToken()
-
-const { fetchMe } = useAppStore()
-
-if (token) {
-  fetchMe()
-  router.replace({ name: 'Home' })
-}
+if (appStore.me) router.push({ name: 'Home' })
 
 const username = ref<string>('')
 const password = ref<string>('')
@@ -102,7 +97,7 @@ async function login() {
 
     saveJwtToken(token)
 
-    await fetchMe()
+    await appStore.fetchMe()
 
     router.push({ name: 'Home' })
   } catch (error: any) {
