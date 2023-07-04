@@ -17,14 +17,8 @@
       />
       <v-spacer />
 
-      <v-chip color="primary">
-        <v-avatar
-          v-if="appStore.me?.thumbnailPhoto"
-          :image="appStore.me?.thumbnailPhoto"
-          start
-        />
-        {{ appStore.me?.displayName }}
-      </v-chip>
+      <user-chip />
+
       <v-btn class="mx-2" @click="logout" icon size="small">
         <v-icon icon="mdi-logout"></v-icon>
       </v-btn>
@@ -37,6 +31,8 @@
 </template>
 
 <script lang="ts" setup>
+import UserChip from '@/components/UserChip.vue'
+
 import { useAppStore } from '@/store/appStore'
 import { removeJwtToken } from '@/auth'
 
