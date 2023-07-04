@@ -23,42 +23,16 @@ class PrinterController {
       )
     }
 
-    if (campus == 'RT') {
-      const printers = await prisma.printer.findMany({
-        where: {
-          network: { OR: [{ shortName: 'RT1' }, { shortName: 'RT2' }] }
-        },
-        include: {
-          network: true,
-          status: {
-            orderBy: { timestamp: 'desc' },
-            take: 1
-          }
-        },
-        orderBy: { network: { cidr: 'asc' } }
-      })
-      return res.json(printers)
-    }
+    let networkCriteria
 
-    if (!campus) {
-      const printers = await prisma.printer.findMany({
-        include: {
-          network: true,
-          status: {
-            orderBy: { timestamp: 'desc' },
-            take: 1
-          }
-        },
-        orderBy: { network: { cidr: 'asc' } }
-      })
-      return res.json(printers)
-    }
+    if (campus == 'RT')
+      networkCriteria = { OR: [{ shortName: 'RT1' }, { shortName: 'RT2' }] }
+    else if (campus) networkCriteria = { shortName: String(campus) }
+    else networkCriteria = undefined
 
     const printers = await prisma.printer.findMany({
       where: {
-        network: {
-          shortName: String(campus)
-        }
+        network: networkCriteria
       },
       include: {
         network: true,
