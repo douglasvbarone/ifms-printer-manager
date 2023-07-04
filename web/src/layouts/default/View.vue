@@ -20,13 +20,18 @@
         v-model.lazy="appStore.printerFilter"
       />
 
-      <v-checkbox
-        class="ml-2"
-        v-model="appStore.onlyMyCampus"
+      <v-select
+        class="ml-3"
+        :items="campiSelectItems"
+        v-model="appStore.selectedCampus"
         @update:model-value="appStore.fetchPrinters"
-        color="primary"
-        :label="`Apenas ${appStore.me?.campus}`"
         hide-details
+        variant="solo"
+        density="compact"
+        style="max-width: 200px"
+        prepend-inner-icon="mdi-domain"
+        label="Campus"
+        rounded
       />
       <v-spacer />
       <v-btn
@@ -59,6 +64,7 @@
 
 <script lang="ts" setup>
 import { useAppStore } from '@/store/appStore'
+
 import { removeJwtToken } from '@/auth'
 
 import { useRouter } from 'vue-router'
@@ -66,6 +72,57 @@ import { useRouter } from 'vue-router'
 const appStore = useAppStore()
 
 const router = useRouter()
+
+const campiSelectItems = [
+  {
+    title: 'Todos',
+    value: ''
+  },
+  {
+    title: 'Reitoria',
+    value: 'RT'
+  },
+  {
+    title: 'Aquidauana',
+    value: 'AQ'
+  },
+  {
+    title: 'Campo Grande',
+    value: 'CG'
+  },
+  {
+    title: 'Corumbá',
+    value: 'CB'
+  },
+  {
+    title: 'Coxim',
+    value: 'CX'
+  },
+  {
+    title: 'Nova Andradina',
+    value: 'NA'
+  },
+  {
+    title: 'Ponta Porã',
+    value: 'PP'
+  },
+  {
+    title: 'Três Lagoas',
+    value: 'TL'
+  },
+  {
+    title: 'Jardim',
+    value: 'JD'
+  },
+  {
+    title: 'Naviraí',
+    value: 'NV'
+  },
+  {
+    title: 'Dourados',
+    value: 'DR'
+  }
+]
 
 function logout() {
   removeJwtToken()

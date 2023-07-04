@@ -4,18 +4,26 @@
     Em desenvolvimento! Versão 0.0.0.½ Alpha Gambiarra
   </div>
   <v-app>
-    <v-main><RouterView /></v-main>
+    <v-main>
+      <keep-alive>
+        <RouterView />
+      </keep-alive>
+    </v-main>
   </v-app>
 </template>
 
 <script setup lang="ts">
 import { useAppStore } from './store/appStore'
-import { onMounted } from 'vue'
+import { onMounted, onBeforeMount } from 'vue'
 
 const appStore = useAppStore()
 
 onMounted(async () => {
   await appStore.fetchMe()
+})
+
+onBeforeMount(() => {
+  appStore.selectedCampus = appStore.me?.campus || ''
 })
 </script>
 <style>

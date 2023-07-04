@@ -9,7 +9,7 @@ export const useAppStore = defineStore('app', {
     me: null as User | null,
     printers: [] as any[],
     printerFilter: '',
-    onlyMyCampus: true,
+    selectedCampus: '',
     loadingPrinters: false
   }),
 
@@ -19,7 +19,7 @@ export const useAppStore = defineStore('app', {
       try {
         this.printers = await api<any[]>(
           `printer?${new URLSearchParams({
-            campus: this.onlyMyCampus ? this.me?.campus || '' : ''
+            campus: this.selectedCampus
           })}`,
           { method: 'GET' }
         )

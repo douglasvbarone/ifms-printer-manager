@@ -1,5 +1,13 @@
 <template>
   <v-container fluid>
+    <v-alert
+      type="info"
+      v-if="appStore.filteredPrinters.length == 0 && appStore.printerFilter"
+      closable
+      variant="outlined"
+    >
+      Nenhuma impressora encontrada com este filtro
+    </v-alert>
     <v-row>
       <v-col
         cols="12"
