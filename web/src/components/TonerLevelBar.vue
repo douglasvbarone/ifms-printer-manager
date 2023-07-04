@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-1">
+  <div>
     <div class="d-flex">
       <div class="flex-grow-1 align-self-center">
         <v-progress-linear
@@ -21,9 +21,12 @@
         </v-chip>
       </div>
     </div>
-    <span class="text-grey-darken-1">
+    <code
+      class="text-grey-darken-1"
+      style="font-size: 14px; top: -12px; position: relative"
+    >
       {{ model }}
-    </span>
+    </code>
   </div>
 </template>
 
