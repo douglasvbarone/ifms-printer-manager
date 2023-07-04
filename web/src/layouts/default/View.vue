@@ -34,15 +34,14 @@
         v-model.lazy="appStore.printerFilter"
       />
 
-      <v-spacer />
       <v-btn
         icon="mdi-refresh"
-        class="mr-1"
-        color="primary"
+        class="ml-2"
         title="Atualizar"
         @click="appStore.fetchPrinters(true)"
         :disabled="appStore.loadingPrinters"
-      ></v-btn>
+      />
+      <v-spacer />
 
       <v-chip color="primary">
         <v-avatar
