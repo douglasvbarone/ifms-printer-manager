@@ -2,10 +2,11 @@
   <v-card
     variant="outlined"
     class="printer-card"
+    :class="{ 'printer-alert': printerAlert }"
     :to="{ name: 'Printer', params: { serialNumber: printer.serialNumber } }"
   >
     <v-row no-gutters wrap>
-      <v-col cols="2" align-self="center">
+      <v-col cols="4" sm="2" align-self="center">
         <v-icon
           v-if="printerAlert"
           class="ma-1 alert"
@@ -15,7 +16,7 @@
         />
         <printer-img class="pa-2" :model="printer.model" />
       </v-col>
-      <v-col cols="4">
+      <v-col cols="8" sm="4">
         <v-list density="compact">
           <v-list-item>
             <v-list-item-title v-if="printer.friendlyName">
@@ -56,7 +57,7 @@
           </v-list-item>
         </v-list>
       </v-col>
-      <v-col cols="6" align-self="center">
+      <v-col cols="12" sm="6" align-self="center">
         <v-list density="compact">
           <v-list-item>
             <v-list-item-title>
@@ -201,6 +202,10 @@ const printerAlert = computed(() => {
 <style scoped>
 .printer-card {
   border-color: #7a7a7a;
+}
+
+.printer-alert {
+  border-color: #fb8c00;
 }
 
 .alert {

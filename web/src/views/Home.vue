@@ -23,7 +23,6 @@ import { onMounted } from 'vue'
 const appStore = useAppStore()
 
 onMounted(async () => {
-  await appStore.fetchMe()
   await appStore.fetchPrinters()
 })
 </script>

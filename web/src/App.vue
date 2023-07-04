@@ -10,10 +10,13 @@
 
 <script setup lang="ts">
 import { useAppStore } from './store/appStore'
+import { onMounted } from 'vue'
 
 const appStore = useAppStore()
 
-appStore.fetchMe()
+onMounted(async () => {
+  await appStore.fetchMe()
+})
 </script>
 <style>
 .alpha-banner {

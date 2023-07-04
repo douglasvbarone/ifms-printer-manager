@@ -27,6 +27,19 @@ const routes = [
         component: () =>
           import(/* webpackChunkName: "home" */ '@/views/Home.vue')
       },
+
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () =>
+          import(/* webpackChunkName: "notfound" */ '@/views/404.vue')
+      }
+    ]
+  },
+  {
+    path: '/:serialNumber',
+    component: () => import('@/layouts/single/Default.vue'),
+    children: [
       {
         path: ':serialNumber',
         name: 'Printer',
@@ -35,13 +48,6 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () =>
           import(/* webpackChunkName: "home" */ '@/views/Printer.vue')
-      },
-
-      {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: () =>
-          import(/* webpackChunkName: "notfound" */ '@/views/404.vue')
       }
     ]
   }
