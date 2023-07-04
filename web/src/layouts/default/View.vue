@@ -77,10 +77,6 @@ const campiSelectItems = [
     value: ''
   },
   {
-    title: 'Reitoria',
-    value: 'RT'
-  },
-  {
     title: 'Aquidauana',
     value: 'AQ'
   },
@@ -97,16 +93,8 @@ const campiSelectItems = [
     value: 'CX'
   },
   {
-    title: 'Nova Andradina',
-    value: 'NA'
-  },
-  {
-    title: 'Ponta Porã',
-    value: 'PP'
-  },
-  {
-    title: 'Três Lagoas',
-    value: 'TL'
+    title: 'Dourados',
+    value: 'DR'
   },
   {
     title: 'Jardim',
@@ -117,8 +105,21 @@ const campiSelectItems = [
     value: 'NV'
   },
   {
-    title: 'Dourados',
-    value: 'DR'
+    title: 'Nova Andradina',
+    value: 'NA'
+  },
+  {
+    title: 'Ponta Porã',
+    value: 'PP'
+  },
+  {
+    title: 'Reitoria',
+    value: 'RT'
+  },
+
+  {
+    title: 'Três Lagoas',
+    value: 'TL'
   }
 ]
 
