@@ -2,7 +2,7 @@
   <v-card
     variant="outlined"
     class="printer-card"
-    :to="{ name: 'Printer', params: { id: printer.id } }"
+    :to="{ name: 'Printer', params: { serialNumber: printer.serialNumber } }"
   >
     <v-row no-gutters wrap>
       <v-col cols="2" align-self="center">
@@ -18,7 +18,13 @@
       <v-col cols="4">
         <v-list density="compact">
           <v-list-item>
-            <v-list-item-title>{{ printer.serialNumber }}</v-list-item-title>
+            <v-list-item-title v-if="printer.friendlyName">
+              {{ printer.friendlyName }} ({{ printer.serialNumber }})
+            </v-list-item-title>
+
+            <v-list-item-title v-else>
+              {{ printer.serialNumber }}
+            </v-list-item-title>
             <v-list-item-subtitle>{{ printer.model }}</v-list-item-subtitle>
           </v-list-item>
           <v-list-item>
@@ -194,7 +200,7 @@ const printerAlert = computed(() => {
 
 <style scoped>
 .printer-card {
-  border-color: #555;
+  border-color: #7a7a7a;
 }
 
 .alert {

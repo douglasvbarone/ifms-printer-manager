@@ -62,13 +62,13 @@ class PrinterController {
   }
 
   static async show(req: Request, res: Response) {
-    const { id } = req.params
+    const { serialNumber } = req.params
     const { take = 32, days = 60 } = req.query
 
     const gte = new Date(Date.now() - 1000 * 60 * 60 * 24 * Number(days))
 
     const printer = await prisma.printer.findUnique({
-      where: { id: Number(id) },
+      where: { serialNumber: serialNumber },
       include: {
         status: {
           where: {
