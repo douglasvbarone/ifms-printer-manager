@@ -41,7 +41,7 @@ class PrinterController {
           take: 1
         }
       },
-      orderBy: { network: { cidr: 'asc' } }
+      orderBy: { ip: 'asc' }
     })
 
     return res.json(printers)

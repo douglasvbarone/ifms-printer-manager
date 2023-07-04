@@ -33,6 +33,7 @@ onMounted(async () => {
   appStore.selectedCampus = appStore.me?.campus || ''
 })
 </script>
+
 <style>
 .alpha-banner {
   position: fixed;

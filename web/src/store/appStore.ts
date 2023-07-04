@@ -15,6 +15,8 @@ export const useAppStore = defineStore('app', {
 
   actions: {
     async fetchPrinters(force = false) {
+      if (!this.me) return []
+
       this.loadingPrinters = true
       try {
         this.printers = await api<any[]>(
