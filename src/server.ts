@@ -14,7 +14,7 @@ export const app = express()
 
 app.use(cors())
 app.use(populateUserMiddleware)
-app.use(loggerMiddleware)
+app.use('/api', loggerMiddleware)
 
 app.use('/api', bodyParser.json())
 
