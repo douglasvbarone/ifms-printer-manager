@@ -20,7 +20,6 @@ const props = defineProps<{
     tonerCyanLevel: number
     tonerMagentaLevel: number
     tonerYellowLevel: number
-    counter: number
   }[]
 }>()
 
@@ -29,10 +28,8 @@ const chartOptions = ref({
     animations: {
       enabled: false
     },
-    // id: 'chart',
-    type: 'line',
 
-    title: 'Toner',
+    type: 'line',
 
     toolbar: {
       show: true
@@ -64,34 +61,55 @@ const chartOptions = ref({
   }
 })
 
-const chartSeries = ref([
-  {
-    name: 'Preto',
-    data: props.status.map(s => ({
-      x: new Date(s.timestamp).getTime(),
-      y: s.tonerBlackLevel
-    }))
-  },
-  {
-    name: 'Ciano',
-    data: props.status.map(s => ({
-      x: new Date(s.timestamp).getTime(),
-      y: s.tonerCyanLevel
-    }))
-  },
-  {
-    name: 'Magenta',
-    data: props.status.map(s => ({
-      x: new Date(s.timestamp).getTime(),
-      y: s.tonerMagentaLevel
-    }))
-  },
-  {
-    name: 'Amarelo',
-    data: props.status.map(s => ({
-      x: new Date(s.timestamp).getTime(),
-      y: s.tonerYellowLevel
-    }))
-  }
-])
+const tonerBlackLevelSeries = {
+  name: 'Preto',
+  data: props.status.map(s => ({
+    x: new Date(s.timestamp).getTime(),
+    y: s.tonerBlackLevel
+  }))
+}
+
+const tonerCyanLevelSeries = {
+  name: 'Ciano',
+  data: props.status.map(s => ({
+    x: new Date(s.timestamp).getTime(),
+    y: s.tonerCyanLevel
+  }))
+}
+
+const tonerMagentaLevelSeries = {
+  name: 'Magenta',
+  data: props.status.map(s => ({
+    x: new Date(s.timestamp).getTime(),
+    y: s.tonerMagentaLevel
+  }))
+}
+
+const tonerYellowLevelSeries = {
+  name: 'Amarelo',
+  data: props.status.map(s => ({
+    x: new Date(s.timestamp).getTime(),
+    y: s.tonerYellowLevel
+  }))
+}
+
+const series = []
+
+if (props.status[0].tonerBlackLevel) {
+  series.push(tonerBlackLevelSeries)
+}
+
+if (props.status[0].tonerCyanLevel) {
+  series.push(tonerCyanLevelSeries)
+}
+
+if (props.status[0].tonerMagentaLevel) {
+  series.push(tonerMagentaLevelSeries)
+}
+
+if (props.status[0].tonerYellowLevel) {
+  series.push(tonerYellowLevelSeries)
+}
+
+const chartSeries = ref(series)
 </script>

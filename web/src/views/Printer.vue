@@ -1,8 +1,18 @@
 <template>
   <v-container>
-    <printer-card class="mb-2" v-if="printer" :printer="printer" />
-
-    <printer-toner-chart v-if="printer" :status="printer?.status" />
+    <v-row>
+      <v-col>
+        <printer-card class="mb-2" v-if="printer" :printer="printer" />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <printer-toner-chart v-if="printer" :status="printer?.status" />
+      </v-col>
+      <v-col>
+        <printer-counter-chart v-if="printer" :status="printer?.status" />
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 <script lang="ts" setup>
@@ -12,6 +22,7 @@ import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import PrinterCard from '@/components/PrinterCard.vue'
 import PrinterTonerChart from '@/components/PrinterTonerChart.vue'
+import PrinterCounterChart from '@/components/PrinterCounterChart.vue'
 
 const route = useRoute()
 
