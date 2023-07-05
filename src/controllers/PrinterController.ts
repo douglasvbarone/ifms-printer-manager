@@ -29,8 +29,7 @@ class PrinterController {
 
     if (campus == 'RT')
       networkCriteria = { OR: [{ shortName: 'RT1' }, { shortName: 'RT2' }] }
-
-    if (campus == 'ALL') networkCriteria = undefined
+    else if (campus == 'ALL') networkCriteria = undefined
     else if (campus) networkCriteria = { shortName: String(campus) }
 
     const printers = await prisma.printer.findMany({
