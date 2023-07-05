@@ -16,7 +16,7 @@
         v-for="printer in appStore.filteredPrinters"
         :key="printer.id"
       >
-        <printer-card :printer="printer" />
+        <printer-card :printer="printer" nav />
       </v-col>
     </v-row>
   </v-container>

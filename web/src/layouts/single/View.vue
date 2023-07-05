@@ -8,13 +8,6 @@
     />
     <v-app-bar :elevation="0">
       <v-btn icon="mdi-arrow-left" @click="router.back" />
-      <v-btn
-        icon="mdi-refresh"
-        class="ml-1"
-        title="Atualizar"
-        @click="appStore.fetchPrinters"
-        :disabled="appStore.loadingPrinters"
-      />
       <v-spacer />
 
       <user-chip />

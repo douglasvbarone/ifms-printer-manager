@@ -1,4 +1,28 @@
 <template>
-  <div>Nada aqui.... Ainda ;)</div>
+  <v-container>
+    <printer-card class="mb-2" v-if="printer" :printer="printer" />
+
+    {{ printer }}
+  </v-container>
 </template>
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { api } from '@/api'
+import { Printer } from '@prisma/client'
+import { useRoute } from 'vue-router'
+import { ref } from 'vue'
+import PrinterCard from '@/components/PrinterCard.vue'
+
+const route = useRoute()
+
+const printer = ref<Printer>()
+
+const serialNumber = route.params.serialNumber as string
+
+async function getPrinter() {
+  printer.value = await api<Printer>(`printer/${serialNumber}`, {
+    method: 'GET'
+  })
+}
+
+getPrinter()
+</script>

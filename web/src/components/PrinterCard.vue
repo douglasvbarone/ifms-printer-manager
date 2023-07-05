@@ -3,7 +3,11 @@
     variant="outlined"
     class="printer-card"
     :class="{ 'printer-alert': printerAlert }"
-    :to="{ name: 'Printer', params: { serialNumber: printer.serialNumber } }"
+    :to="
+      nav
+        ? { name: 'Printer', params: { serialNumber: printer.serialNumber } }
+        : undefined
+    "
   >
     <v-row no-gutters wrap>
       <v-col cols="4" sm="2" align-self="center">
@@ -93,6 +97,7 @@ import { computed } from 'vue'
 
 const props = defineProps<{
   printer: any
+  nav?: boolean
 }>()
 
 const printerAlert = computed(() => {

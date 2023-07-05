@@ -69,7 +69,8 @@ class PrinterController {
           orderBy: {
             timestamp: 'desc'
           }
-        }
+        },
+        network: true
       }
     })
 
