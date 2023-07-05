@@ -112,11 +112,25 @@ class PrinterController {
   }
 }
 
-router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
-
-router.get('/', PrinterController.index)
-router.get('/:serialNumber', PrinterController.show)
-router.put('/:serialNumber', PrinterController.edit)
-router.delete('/:serialNumber', PrinterController.delete)
+router.get(
+  '/',
+  hasRolesMiddleware(['INSPECTOR', 'ADMIN']),
+  PrinterController.index
+)
+router.get(
+  '/:serialNumber',
+  hasRolesMiddleware(['INSPECTOR', 'ADMIN']),
+  PrinterController.show
+)
+router.put(
+  '/:serialNumber',
+  hasRolesMiddleware(['ADMIN']),
+  PrinterController.edit
+)
+router.delete(
+  '/:serialNumber',
+  hasRolesMiddleware(['ADMIN']),
+  PrinterController.delete
+)
 
 export default router
