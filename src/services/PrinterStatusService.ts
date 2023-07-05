@@ -43,50 +43,57 @@ export type PrinterInfo = {
 
 export class PrinterStatusService {
   constructor(private printer: Printer) {
-    this.getPrinterSnmpStatus().then(async printerStatus => {
-      const lastStatus = await prisma.printerStatus.findFirst({
-        where: { printerId: this.printer.id },
-        orderBy: { timestamp: 'desc' }
-      })
-
-      if (
-        lastStatus?.counter == printerStatus.counter &&
-        lastStatus?.tonerBlackLevel == printerStatus.toners.black.level &&
-        lastStatus?.tonerCyanLevel == printerStatus.toners.cyan?.level &&
-        lastStatus?.tonerMagentaLevel == printerStatus.toners.magenta?.level &&
-        lastStatus?.tonerYellowLevel == printerStatus.toners.yellow?.level
-      ) {
-        await prisma.printerStatus.update({
-          where: { id: lastStatus.id },
-          data: { timestamp: new Date() }
+    this.getPrinterSnmpStatus()
+      .then(async printerStatus => {
+        const lastStatus = await prisma.printerStatus.findFirst({
+          where: { printerId: this.printer.id },
+          orderBy: { timestamp: 'desc' }
         })
-      } else {
-        console.log(
-          `Updating printer status ${this.printer.serialNumber} (${this.printer.ip}). Counter:${lastStatus?.counter} to ${printerStatus.counter}`
-        )
 
-        await prisma.printer.update({
-          where: { serialNumber: this.printer.serialNumber },
-          data: {
-            location: printerStatus.location,
-            blackTonerModel: printerStatus.toners.black.model,
-            cyanTonerModel: printerStatus.toners.cyan?.model,
-            magentaTonerModel: printerStatus.toners.magenta?.model,
-            yellowTonerModel: printerStatus.toners.yellow?.model,
+        if (
+          lastStatus?.counter == printerStatus.counter &&
+          lastStatus?.tonerBlackLevel == printerStatus.toners.black.level &&
+          lastStatus?.tonerCyanLevel == printerStatus.toners.cyan?.level &&
+          lastStatus?.tonerMagentaLevel ==
+            printerStatus.toners.magenta?.level &&
+          lastStatus?.tonerYellowLevel == printerStatus.toners.yellow?.level
+        ) {
+          await prisma.printerStatus.update({
+            where: { id: lastStatus.id },
+            data: { timestamp: new Date() }
+          })
+        } else {
+          console.log(
+            `Updating printer status ${this.printer.serialNumber} (${this.printer.ip}). Counter:${lastStatus?.counter} to ${printerStatus.counter}`
+          )
 
-            status: {
-              create: {
-                counter: printerStatus.counter,
-                tonerBlackLevel: printerStatus.toners.black.level,
-                tonerCyanLevel: printerStatus.toners.cyan?.level,
-                tonerMagentaLevel: printerStatus.toners.magenta?.level,
-                tonerYellowLevel: printerStatus.toners.yellow?.level
+          await prisma.printer.update({
+            where: { serialNumber: this.printer.serialNumber },
+            data: {
+              location: printerStatus.location,
+              blackTonerModel: printerStatus.toners.black.model,
+              cyanTonerModel: printerStatus.toners.cyan?.model,
+              magentaTonerModel: printerStatus.toners.magenta?.model,
+              yellowTonerModel: printerStatus.toners.yellow?.model,
+
+              status: {
+                create: {
+                  counter: printerStatus.counter,
+                  tonerBlackLevel: printerStatus.toners.black.level,
+                  tonerCyanLevel: printerStatus.toners.cyan?.level,
+                  tonerMagentaLevel: printerStatus.toners.magenta?.level,
+                  tonerYellowLevel: printerStatus.toners.yellow?.level
+                }
               }
             }
-          }
-        })
-      }
-    })
+          })
+        }
+      })
+      .catch(err => {
+        console.log(
+          `Couldn't get printer status for ${printer.serialNumber} (IP:${printer.ip}). Error: ${err}`
+        )
+      })
   }
 
   private objectIdsArray(): string[] {
@@ -178,8 +185,7 @@ export class PrinterStatusService {
     current: string | undefined,
     max: string | undefined
   ) {
-    if (typeof current === 'undefined' || typeof max === 'undefined')
-      throw new Error('current or max is undefined')
+    if (typeof current === 'undefined' || typeof max === 'undefined') return 0
 
     return Math.floor((+current! / +max!) * 100)
   }

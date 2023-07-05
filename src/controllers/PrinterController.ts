@@ -10,7 +10,9 @@ const router = Router()
 
 class PrinterController {
   static async index(req: Request, res: Response) {
-    const { campus, force } = req.query
+    let { campus, force } = req.query
+
+    if (!campus) campus = res.locals.user?.campus
 
     if (force) {
       const printers = await prisma.printer.findMany()
@@ -27,8 +29,9 @@ class PrinterController {
 
     if (campus == 'RT')
       networkCriteria = { OR: [{ shortName: 'RT1' }, { shortName: 'RT2' }] }
+
+    if (campus == 'ALL') networkCriteria = undefined
     else if (campus) networkCriteria = { shortName: String(campus) }
-    else networkCriteria = undefined
 
     const printers = await prisma.printer.findMany({
       where: {

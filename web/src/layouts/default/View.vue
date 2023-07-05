@@ -74,7 +74,7 @@ const { smAndUp } = useDisplay()
 const campiSelectItems = [
   {
     title: 'Todos',
-    value: ''
+    value: 'ALL'
   },
   {
     title: 'Aquidauana',
