@@ -26,11 +26,5 @@
 import PrinterCard from '@/components/PrinterCard.vue'
 import { useAppStore } from '@/store/appStore'
 
-import { onMounted } from 'vue'
-
 const appStore = useAppStore()
-
-onMounted(async () => {
-  await appStore.fetchPrinters()
-})
 </script>
