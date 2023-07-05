@@ -82,17 +82,17 @@ class PrinterController {
   }
 
   static async edit(req: Request, res: Response) {
-    const { id } = req.params
+    const { serialNumber } = req.params
     const { friendlyName } = req.body
 
     // Verify if printer exists
     const printerExists = await prisma.printer.findUnique({
-      where: { id: Number(id) }
+      where: { serialNumber: serialNumber }
     })
 
     if (printerExists) {
       const printer = await prisma.printer.update({
-        where: { id: Number(id) },
+        where: { serialNumber: serialNumber },
         data: { friendlyName }
       })
 
@@ -114,8 +114,8 @@ class PrinterController {
 router.use(hasRolesMiddleware(['ADMIN', 'INSPECTOR']))
 
 router.get('/', PrinterController.index)
-router.get('/:id', PrinterController.show)
-router.put('/:id', PrinterController.edit)
-router.delete('/:id', PrinterController.delete)
+router.get('/:serialNumber', PrinterController.show)
+router.put('/:serialNumber', PrinterController.edit)
+router.delete('/:serialNumber', PrinterController.delete)
 
 export default router
