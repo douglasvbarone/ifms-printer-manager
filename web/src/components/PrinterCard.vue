@@ -20,7 +20,7 @@
         />
         <printer-img class="pa-2" :model="printer.model" />
       </v-col>
-      <v-col cols="8" sm="4">
+      <v-col cols="8" sm="4" align-self="center">
         <v-list density="compact">
           <v-list-item>
             <v-list-item-title v-if="printer.friendlyName">
