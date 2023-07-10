@@ -1,6 +1,10 @@
 <template>
-  <div class="page">
-    <h1>404</h1>
-    <p>Page not found.</p>
-  </div>
+  <v-container class="page" fluid>
+    <h1 class="text-h1">404</h1>
+    <p>Página não encontrada...</p>
+    <br />
+
+    <p>Talvez tenha acabado o toner...</p>
+    <p>Chacoalhe o computador, as vezes resolve... 🤷</p>
+  </v-container>
 </template>
