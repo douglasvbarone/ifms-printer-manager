@@ -11,6 +11,13 @@ const routes = [
         name: 'Login',
         component: () =>
           import(/* webpackChunkName: "login" */ '@/views/Login.vue')
+      },
+
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: () =>
+          import(/* webpackChunkName: "notfound" */ '@/views/404.vue')
       }
     ]
   },
@@ -26,13 +33,6 @@ const routes = [
         // which is lazy-loaded when the route is visited.
         component: () =>
           import(/* webpackChunkName: "home" */ '@/views/Home.vue')
-      },
-
-      {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: () =>
-          import(/* webpackChunkName: "notfound" */ '@/views/404.vue')
       }
     ]
   },
