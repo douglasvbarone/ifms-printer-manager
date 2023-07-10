@@ -44,6 +44,18 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/discovery',
+    component: () => import('@/layouts/single/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'Discovery',
+        component: () =>
+          import(/* webpackChunkName: "discovery" */ '@/views/Discovery.vue')
+      }
+    ]
+  },
 
   {
     path: '/about',
