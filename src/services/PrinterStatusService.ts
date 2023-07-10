@@ -5,6 +5,7 @@ import {
   objectIdsRepository,
   PrinterObjectIds
 } from '../repositories/ObjectIDRepository.js'
+import log from '../log.js'
 
 type VarbindString = {
   oid: string
@@ -63,7 +64,8 @@ export class PrinterStatusService {
             data: { timestamp: new Date() }
           })
         } else {
-          console.log(
+          log.info(
+            new Date().toLocaleString(),
             `Updating printer status ${this.printer.serialNumber} (${this.printer.ip}). Counter:${lastStatus?.counter} to ${printerStatus.counter}`
           )
 
@@ -90,7 +92,8 @@ export class PrinterStatusService {
         }
       })
       .catch(err => {
-        console.log(
+        log.error(
+          new Date().toLocaleString(),
           `Couldn't get printer status for ${printer.serialNumber} (IP:${printer.ip}). Error: ${err}`
         )
       })

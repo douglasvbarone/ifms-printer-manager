@@ -1,7 +1,8 @@
+import log from '../log.js'
 import { PrinterDiscoveryService } from '../services/PrinterDiscoveryService.js'
 
 async function discoverPrinters() {
-  console.log(`Discovering printers ${new Date().toLocaleString()}`)
+  log.info(new Date().toLocaleString(), `Discovering printers`)
 
   await PrinterDiscoveryService.discoverAll()
 }

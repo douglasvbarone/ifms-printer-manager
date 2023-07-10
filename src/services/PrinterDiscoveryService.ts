@@ -3,6 +3,7 @@ import netmask from 'netmask'
 import { PrinterStatusService } from './PrinterStatusService.js'
 import { prisma } from '../prisma.js'
 import { Printer } from '@prisma/client'
+import log from '../log.js'
 
 export class PrinterDiscoveryService {
   private static async isPrinter(ip: string) {
@@ -55,15 +56,21 @@ export class PrinterDiscoveryService {
           try {
             if (await PrinterDiscoveryService.isPrinter(ip)) {
               printers.push(ip)
-              console.log(`Found printer at IP: ${ip}`)
+              log.info(
+                new Date().toLocaleString(),
+                `Found printer at IP: ${ip}`
+              )
             }
           } catch (error: any) {
-            console.log(`Error checking ${ip}: ${error.message}`)
+            log.error(
+              new Date().toLocaleString(),
+              `Error checking ${ip}: ${error.message}`
+            )
           }
         })
       )
-    } catch (err) {
-      console.log(err)
+    } catch (error: any) {
+      log.error(new Date().toLocaleString(), error)
     }
 
     return printers
@@ -76,15 +83,19 @@ export class PrinterDiscoveryService {
     const discoveredPrintersIPs: string[] = []
 
     for (const network of networks) {
-      console.log('Discovering printers for network', network.cidr)
+      log.info(
+        new Date().toLocaleString(),
+        'Discovering printers for network',
+        network.cidr
+      )
 
       try {
         const discoveredPrintersIPsForNetwork =
           await PrinterDiscoveryService.discovery(network.cidr)
 
         discoveredPrintersIPs.push(...discoveredPrintersIPsForNetwork)
-      } catch (error) {
-        console.log(error)
+      } catch (error: any) {
+        log.error(new Date().toLocaleString(), error)
       }
 
       const printers = await prisma.printer.findMany()

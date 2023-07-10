@@ -1,8 +1,9 @@
+import log from '../log.js'
 import { prisma } from '../prisma.js'
 import { PrinterStatusService } from '../services/PrinterStatusService.js'
 
 function updatePrinterStatus() {
-  console.log(`Updating printers status ${new Date().toLocaleString()}`)
+  log.info(new Date().toLocaleString(), `Updating printers status`)
 
   prisma.printer.findMany().then(printers => {
     printers.forEach(async printer => {

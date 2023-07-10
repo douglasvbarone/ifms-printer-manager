@@ -5,6 +5,7 @@ import { prisma } from '../prisma.js'
 
 import { distributedCopy } from '../utils/distributedCopy.js'
 import { PrinterStatusService } from '../services/PrinterStatusService.js'
+import log from '../log.js'
 
 const router = Router()
 
@@ -16,7 +17,7 @@ class PrinterController {
 
     if (force) {
       const printers = await prisma.printer.findMany()
-      console.log(`Updating printers status ${new Date().toLocaleString()}`)
+      log.info(new Date().toLocaleString(), `Updating printers status`)
 
       Promise.allSettled(
         printers.map(async printer => {

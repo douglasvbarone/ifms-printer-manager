@@ -29,6 +29,7 @@
     "@types/express": "^4.17.17",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "^20.3.1",
+    "@types/npmlog": "^4.1.4",
     "nodemon": "^2.0.22",
     "prettier": "^2.8.8",
     "prisma": "^4.15.0",
@@ -50,6 +51,7 @@
     "jsonwebtoken": "^9.0.0",
     "ldapts": "^4.2.6",
     "net-snmp": "^3.9.6",
-    "netmask": "^2.0.2"
+    "netmask": "^2.0.2",
+    "npmlog": "^7.0.1"
   }
 }
