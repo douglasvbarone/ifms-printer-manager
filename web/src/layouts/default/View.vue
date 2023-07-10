@@ -48,6 +48,22 @@
       <v-btn class="mx-2" @click="logout" icon size="small">
         <v-icon icon="mdi-logout"></v-icon>
       </v-btn>
+
+      <v-menu>
+        <template v-slot:activator="{ props }">
+          <v-btn icon="mdi-dots-vertical" v-bind="props"></v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in menuItems"
+            :key="i"
+            @click="item.action"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-main>
@@ -70,6 +86,17 @@ const appStore = useAppStore()
 const router = useRouter()
 
 const { smAndUp } = useDisplay()
+
+const menuItems = [
+  {
+    title: 'Procurar impressoras...',
+    action: () => router.push({ name: 'Discovery' })
+  },
+  {
+    title: 'Sobre',
+    action: () => router.push({ name: 'About' })
+  }
+]
 
 const campiSelectItems = [
   {
