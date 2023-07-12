@@ -1,11 +1,11 @@
 <template>
-  <v-card>
+  <v-card title="Contador" prepend-icon="mdi-counter">
     <apexchart
       type="line"
       :options="chartOptions"
       :series="chartSeries"
       width="100%"
-      height="300px"
+      height="250px"
     />
   </v-card>
 </template>
