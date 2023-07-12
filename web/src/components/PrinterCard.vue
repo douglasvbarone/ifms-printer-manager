@@ -1,8 +1,6 @@
 <template>
   <v-card
-    variant="outlined"
     class="printer-card"
-    :class="{ 'printer-alert': printerAlert }"
     :to="
       nav
         ? { name: 'Printer', params: { serialNumber: printer.serialNumber } }
@@ -13,10 +11,10 @@
       <v-col cols="4" sm="2" align-self="center">
         <v-icon
           v-if="printerAlert"
-          class="ma-1 alert"
+          class="ma-1 alert-icon"
           color="warning"
-          icon="mdi-alert"
-          size="large"
+          icon="mdi-alert-circle"
+          size="x-large"
         />
         <printer-img class="pa-2" :model="printer.model" />
       </v-col>
@@ -120,9 +118,10 @@ const printerAlert = computed(() => {
 
 .printer-alert {
   border-color: #fb8c00;
+  border-width: 1px;
 }
 
-.alert {
+.alert-icon {
   position: absolute;
   top: 0;
   z-index: 99;
