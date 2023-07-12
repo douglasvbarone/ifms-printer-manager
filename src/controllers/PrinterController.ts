@@ -74,12 +74,17 @@ class PrinterController {
       }
     })
 
-    if (printer)
+    if (printer) {
+      const avgMonthPrint = await PrinterStatusService.avgMonthPrint(
+        printer.serialNumber
+      )
+
       res.json({
         ...printer,
+        avgMonthPrint,
         status: distributedCopy(printer.status, Number(take))
       })
-    else res.status(400).json({ error: 'Printer not found' })
+    } else res.status(400).json({ error: 'Printer not found' })
   }
 
   static async edit(req: Request, res: Response) {

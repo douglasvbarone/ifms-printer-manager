@@ -254,4 +254,52 @@ export class PrinterStatusService {
 
     return printerInfo
   }
+
+  static async avgMonthPrint(serialNumber: string) {
+    const gte = new Date(new Date().getTime() - 1000 * 3600 * 24 * 180)
+
+    const firstPrinterStatus = await prisma.printerStatus.findFirst({
+      where: {
+        printer: {
+          serialNumber
+        },
+        timestamp: {
+          gte
+        }
+      },
+      orderBy: { timestamp: 'asc' }
+    })
+
+    const lastPrinterStatus = await prisma.printerStatus.findFirst({
+      where: {
+        printer: {
+          serialNumber
+        },
+        timestamp: {
+          gte
+        }
+      },
+      orderBy: { timestamp: 'desc' }
+    })
+
+    if (!firstPrinterStatus || !lastPrinterStatus) return 0
+
+    const firstCounter = firstPrinterStatus.counter
+    const lastCounter = lastPrinterStatus.counter
+
+    const firstTimestamp = firstPrinterStatus.timestamp
+    const lastTimestamp = lastPrinterStatus.timestamp
+
+    const timeDiff = lastTimestamp.getTime() - firstTimestamp.getTime()
+
+    const counterDiff = lastCounter - firstCounter
+
+    const avgMonthPrint = Math.floor(
+      counterDiff / (timeDiff / 1000 / 3600 / 24 / 30)
+    )
+
+    console.log(counterDiff, timeDiff, avgMonthPrint)
+
+    return avgMonthPrint
+  }
 }
