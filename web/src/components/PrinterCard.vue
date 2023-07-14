@@ -8,7 +8,7 @@
     "
   >
     <v-row no-gutters wrap>
-      <v-col cols="4" sm="2" align-self="center">
+      <v-col cols="4" sm="2" align-self="center" class="pa-1">
         <v-icon
           v-if="printerAlert"
           class="ma-1 alert-icon"
