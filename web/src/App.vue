@@ -1,8 +1,4 @@
 <template>
-  <div class="alpha-banner py-1 px-3 bg-amber text-black">
-    <v-icon size="small" icon="mdi-bug" start />
-    <small>Em desenvolvimento! Versão 0.0.0.½ Alpha Gambiarra</small>
-  </div>
   <v-app>
     <v-main>
       <router-view v-slot="{ Component }">
@@ -35,16 +31,3 @@ onBeforeMount(async () => {
   await appStore.fetchPrinters()
 })
 </script>
-
-<style>
-.alpha-banner {
-  position: fixed;
-  bottom: 5px;
-  right: 5px;
-  z-index: 99999;
-  opacity: 0.5;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.12), 0 2px 2px rgba(0, 0, 0, 0.12),
-    0 4px 4px rgba(0, 0, 0, 0.12), 0 8px 8px rgba(0, 0, 0, 0.12),
-    0 16px 16px rgba(0, 0, 0, 0.12);
-}
-</style>
