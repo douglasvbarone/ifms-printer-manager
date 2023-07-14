@@ -16,13 +16,14 @@
         center-affix
         variant="solo"
         density="compact"
-        style="max-width: 200px"
+        style="max-width: 220px"
         prepend-inner-icon="mdi-domain"
         label="Campus"
         rounded
+        :disabled="appStore.loadingPrinters"
       />
       <v-text-field
-        v-if="smAndUp"
+        v-if="mdAndUp"
         class="ml-2"
         density="compact"
         style="max-width: 200px"
@@ -33,6 +34,7 @@
         prepend-inner-icon="mdi-printer-search"
         clearable
         v-model.lazy="appStore.printerFilter"
+        :disabled="appStore.loadingPrinters"
       />
 
       <v-btn
@@ -85,7 +87,7 @@ const appStore = useAppStore()
 
 const router = useRouter()
 
-const { smAndUp } = useDisplay()
+const { mdAndUp } = useDisplay()
 
 const menuItems = [
   {
