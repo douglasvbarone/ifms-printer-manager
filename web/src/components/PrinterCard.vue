@@ -64,6 +64,7 @@
           :level="printer.status[0].tonerBlackLevel"
           :model="printer.blackTonerModel"
           color="black"
+          :solo="!printer.status[0].tonerCyanLevel"
         />
         <toner-level-bar
           v-if="printer.status[0].tonerCyanLevel"

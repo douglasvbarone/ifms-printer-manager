@@ -4,7 +4,7 @@
       <div class="flex-grow-1 align-self-center">
         <v-progress-linear
           :title="`${level}%`"
-          :height="8"
+          :height="solo ? 30 : 12"
           :color="bgColor"
           :model-value="level"
         />
@@ -23,7 +23,11 @@
     </div>
     <code
       class="text-grey-darken-1"
-      style="font-size: 14px; top: -12px; position: relative"
+      :style="{
+        fontSize: '14px',
+        top: solo ? 0 : '-8px',
+        position: 'relative'
+      }"
     >
       {{ model }}
     </code>
@@ -37,6 +41,7 @@ const props = defineProps<{
   level: number
   color: 'black' | 'cyan' | 'magenta' | 'yellow'
   model: string
+  solo?: boolean
 }>()
 
 const bgColor = computed(() => {
