@@ -3,7 +3,6 @@ import { Request, Response, Router } from 'express'
 import { hasRolesMiddleware } from '../middlewares/hasRolesMiddleware.js'
 import { prisma } from '../prisma.js'
 
-import { distributedCopy } from '../utils/distributedCopy.js'
 import { PrinterStatusService } from '../services/PrinterStatusService.js'
 import log from '../log.js'
 
@@ -52,7 +51,7 @@ class PrinterController {
 
   static async show(req: Request, res: Response) {
     const { serialNumber } = req.params
-    const { take = 32, days = 60 } = req.query
+    const { days = 60 } = req.query
 
     const gte = new Date(Date.now() - 1000 * 60 * 60 * 24 * Number(days))
 
@@ -82,7 +81,7 @@ class PrinterController {
       res.json({
         ...printer,
         avgMonthPrint,
-        status: distributedCopy(printer.status, Number(take))
+        status: printer.status
       })
     } else res.status(400).json({ error: 'Printer not found' })
   }
