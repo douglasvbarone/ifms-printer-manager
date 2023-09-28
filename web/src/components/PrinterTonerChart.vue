@@ -39,7 +39,7 @@ const chartOptions = ref({
   colors: ['#000000', '#00BCD4', '#E91E63', '#FDD835'],
 
   stroke: {
-    curve: 'stepline',
+    curve: 'smooth',
     width: 4
   },
   grid: {
