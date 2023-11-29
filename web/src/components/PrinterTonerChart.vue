@@ -95,7 +95,7 @@ const tonerYellowLevelSeries = {
 
 const series = []
 
-if (props.status[0].tonerBlackLevel) {
+if (props.status[0].tonerBlackLevel !== null) {
   series.push(tonerBlackLevelSeries)
 }
 
