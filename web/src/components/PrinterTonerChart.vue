@@ -99,15 +99,15 @@ if (props.status[0].tonerBlackLevel !== null) {
   series.push(tonerBlackLevelSeries)
 }
 
-if (props.status[0].tonerCyanLevel) {
+if (props.status[0].tonerCyanLevel !== null) {
   series.push(tonerCyanLevelSeries)
 }
 
-if (props.status[0].tonerMagentaLevel) {
+if (props.status[0].tonerMagentaLevel !== null) {
   series.push(tonerMagentaLevelSeries)
 }
 
-if (props.status[0].tonerYellowLevel) {
+if (props.status[0].tonerYellowLevel !== null) {
   series.push(tonerYellowLevelSeries)
 }
 
