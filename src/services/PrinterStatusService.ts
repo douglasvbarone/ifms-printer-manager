@@ -298,8 +298,6 @@ export class PrinterStatusService {
       counterDiff / (timeDiff / 1000 / 3600 / 24 / 30)
     )
 
-    console.log(counterDiff, timeDiff, avgMonthPrint)
-
     return avgMonthPrint
   }
 }
