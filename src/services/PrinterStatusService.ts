@@ -92,7 +92,7 @@ export class PrinterStatusService {
         }
       })
       .catch(err => {
-        log.error(
+        log.warn(
           new Date().toLocaleString(),
           `Couldn't get printer status for ${printer.serialNumber} (IP:${printer.ip}). Error: ${err}`
         )
