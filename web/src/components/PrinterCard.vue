@@ -35,7 +35,15 @@
               {{ printer.location || '-' }}
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ printer.ip }} ({{ printer.network.name }})
+              <a
+                class="link"
+                :href="`http://${printer.ip}`"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {{ printer.ip }} ({{ printer.network.name }})
+                <v-icon size="x-small">mdi-open-in-new</v-icon>
+              </a>
             </v-list-item-subtitle>
           </v-list-item>
           <v-list-item>
@@ -126,5 +134,14 @@ const printerAlert = computed(() => {
   position: absolute;
   top: 0;
   z-index: 99;
+}
+
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 </style>
