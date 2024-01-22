@@ -40,6 +40,7 @@
                 :href="`http://${printer.ip}`"
                 target="_blank"
                 rel="noreferrer"
+                @click.stop
               >
                 {{ printer.ip }} ({{ printer.network.name }})
                 <v-icon size="x-small">mdi-open-in-new</v-icon>
