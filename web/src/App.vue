@@ -14,6 +14,7 @@
 import { useRouter } from 'vue-router'
 import { useAppStore } from './store/appStore'
 import { onBeforeMount } from 'vue'
+import { BASE_URL } from './api'
 
 const router = useRouter()
 const appStore = useAppStore()
@@ -29,5 +30,14 @@ onBeforeMount(async () => {
   appStore.selectedCampus = appStore.me?.campus || ''
 
   await appStore.fetchPrinters()
+
+  const eventURI = `${BASE_URL}events`
+
+  const events = new EventSource(eventURI)
+
+  events.onmessage = async event => {
+    await appStore.fetchPrinters()
+    console.log('Event:', event)
+  }
 })
 </script>
