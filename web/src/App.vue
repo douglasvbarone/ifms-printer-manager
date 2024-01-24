@@ -36,7 +36,6 @@ onBeforeMount(async () => {
   const events = new EventSource(eventURI)
 
   events.onmessage = async event => {
-    console.log('Event:', event)
     await appStore.fetchPrinters()
   }
 })
