@@ -36,13 +36,13 @@ export class EventsController {
     })
   }
 
-  static async sendEvent(event: string, data: any = null) {
+  static async sendEvent(data: any = null) {
     this.clients.forEach(client => {
       log.info(
         new Date().toLocaleString(),
-        `Sending event ${event} to ${client.id}`
+        `Sending event message to ${client.id}`
       )
-      client.res.write(`event: ${event}\n`)
+      client.res.write(`event: message\n`)
       client.res.write(`data: ${JSON.stringify(data)}\n\n`)
     })
   }
