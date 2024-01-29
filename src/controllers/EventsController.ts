@@ -8,6 +8,10 @@ export class EventsController {
   private static clients: { id: string; res: Response }[] = []
 
   static async eventsHandler(req: Request, res: Response) {
+    /*
+      If the server is behind a nginx reverse proxy, use the following configuration:
+      proxy_read_timeout 24h;
+    */
     const headers = {
       'Content-Type': 'text/event-stream',
       Connection: 'keep-alive',
