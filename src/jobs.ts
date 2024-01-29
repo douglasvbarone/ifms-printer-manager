@@ -23,5 +23,8 @@ export const jobs = new Bree({
 
 jobs.on('worker deleted', name => {
   if (name == 'updatePrinterStatus')
-    EventsController.sendEvent({ status: 'success' })
+    EventsController.sendEvent({
+      message: 'Printers updated',
+      timestamp: new Date().toLocaleString()
+    })
 })
