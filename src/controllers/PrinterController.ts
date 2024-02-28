@@ -51,7 +51,7 @@ class PrinterController {
 
   static async show(req: Request, res: Response) {
     const { serialNumber } = req.params
-    const { days = 180 } = req.query
+    const { days = 360 } = req.query
 
     const gte = new Date(Date.now() - 1000 * 60 * 60 * 24 * Number(days))
 
