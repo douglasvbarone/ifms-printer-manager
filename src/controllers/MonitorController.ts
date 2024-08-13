@@ -5,7 +5,7 @@ const router = Router()
 
 class MonitorController {
   static async status(req: Request, res: Response) {
-    // If last status has a toner level below 20%, send an alert
+    // If last status has a toner level below 25%, send an alert
     const { printerId } = req.params
 
     const status = await prisma.printerStatus.findFirst({
