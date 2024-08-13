@@ -10,6 +10,7 @@ import PrinterRouter from './controllers/PrinterController.js'
 import PrinterStatusRouter from './controllers/PrinterStatusController.js'
 import PrinterDiscoveryRouter from './controllers/PrinterDiscoveryController.js'
 import EventsRouter from './controllers/EventsController.js'
+import MonitorController from './controllers/MonitorController.js'
 
 export const app = express()
 
@@ -29,6 +30,7 @@ app.use('/api/printer', PrinterRouter)
 app.use('/api/status', PrinterStatusRouter)
 app.use('/api/discovery', PrinterDiscoveryRouter)
 app.use('/api/events', EventsRouter)
+app.use('/api/monitor', MonitorController)
 
 app.use('/', express.static('public'))
 
