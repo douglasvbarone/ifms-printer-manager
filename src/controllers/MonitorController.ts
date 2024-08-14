@@ -18,7 +18,7 @@ class MonitorController {
     })
 
     if (status?.tonerBlackLevel && status.tonerBlackLevel < 25) {
-      res.send('low toner')
+      res.send(`Toner baixo! Nível atual: ${status.tonerBlackLevel}%`)
     } else {
       res.send('ok')
     }
