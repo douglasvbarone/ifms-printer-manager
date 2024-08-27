@@ -6,25 +6,28 @@ const router = Router()
 class MonitorController {
   static async status(req: Request, res: Response) {
     // If last status has a toner level below 25%, send an alert
-    const { printerId } = req.params
+    const { serialNumber } = req.params
 
     const status = await prisma.printerStatus.findFirst({
       where: {
         printer: {
-          serialNumber: printerId
+          serialNumber: serialNumber
         }
       },
-      orderBy: { timestamp: 'desc' }
+      select: {
+        tonerBlackLevel: true
+      },
+      orderBy: { id: 'desc' }
     })
 
     if (status?.tonerBlackLevel && status.tonerBlackLevel < 25) {
-      res.send(`Toner baixo! Nível atual: ${status.tonerBlackLevel}%`)
+      res.send(`Toner baixo! ${status.tonerBlackLevel}%`)
     } else {
       res.send('ok')
     }
   }
 }
 
-router.get('/:printerId', MonitorController.status)
+router.get('/:serialNumber', MonitorController.status)
 
 export default router
