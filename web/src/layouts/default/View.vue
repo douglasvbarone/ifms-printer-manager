@@ -11,7 +11,7 @@
         class="ml-2"
         :items="campiSelectItems"
         v-model="appStore.selectedCampus"
-        @update:model-value="appStore.fetchPrinters"
+        @update:model-value="() => appStore.fetchPrinters(true)"
         hide-details
         center-affix
         variant="solo"
