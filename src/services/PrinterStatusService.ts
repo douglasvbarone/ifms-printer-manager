@@ -124,9 +124,7 @@ export class PrinterStatusService {
     const varbindsString: VarbindString[] = []
 
     varbinds?.forEach((varbind: Varbind) => {
-      if (varbind.value instanceof Buffer)
-        varbindsString.push({ ...varbind, value: varbind.value.toString() })
-      else varbindsString.push({ ...varbind, value: varbind.value })
+      varbindsString.push({ ...varbind, value: varbind.value.toString() })
     })
 
     return varbindsString
