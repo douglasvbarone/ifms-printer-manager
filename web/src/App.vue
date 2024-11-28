@@ -29,13 +29,13 @@ onBeforeMount(async () => {
 
   appStore.selectedCampus = appStore.me?.campus || ''
 
-  await appStore.fetchPrinters()
+
 
   const eventURI = `${BASE_URL}events`
 
   const events = new EventSource(eventURI)
 
-  events.onmessage = async event => {
+  events.onmessage = async () => {
     await appStore.fetchPrinters()
   }
 })

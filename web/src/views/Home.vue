@@ -23,8 +23,13 @@
 </template>
 
 <script lang="ts" setup>
+import {onActivated} from 'vue'
 import PrinterCard from '@/components/PrinterCard.vue'
 import { useAppStore } from '@/store/appStore'
 
 const appStore = useAppStore()
+
+onActivated(async () => {
+  await appStore.fetchPrinters()
+})
 </script>
