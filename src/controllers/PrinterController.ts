@@ -46,7 +46,7 @@ class PrinterController {
       orderBy: { ip: 'asc' }
     })
 
-    return res.json(printers)
+    res.json(printers)
   }
 
   static async show(req: Request, res: Response) {
