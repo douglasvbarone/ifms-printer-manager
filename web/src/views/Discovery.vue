@@ -17,40 +17,51 @@
       Redescobrir impressoras
     </v-btn>
 
-    <v-card
-      class="mt-8"
-      v-if="discoveredPrintersIPs.length || newPrinters.length"
-    >
+    <v-card class="mt-8" v-if="supportedPrintersIPs.length">
       <v-card-title>
-        <h5 class="text-h5 mb-0">Impressoras encontradas</h5>
+        <h5 class="text-h5 mb-0">Impressoras suportadas encontradas</h5>
       </v-card-title>
       <v-card-text>
         <v-chip
           class="ma-1"
-          v-for="printerIP in discoveredPrintersIPs"
+          v-for="printerIP in supportedPrintersIPs"
           :key="printerIP"
           variant="outlined"
         >
           {{ printerIP }}
         </v-chip>
       </v-card-text>
+    </v-card>
+
+    <v-card class="mt-8" v-if="unsupportedPrintersIPs.length">
       <v-card-title>
-        <h5 class="text-h5 mb-0">Novas impressoras</h5>
+        <h5 class="text-h5 mb-8">Impressoras não suportadas encontradas</h5>
       </v-card-title>
-      <v-card-text v-if="newPrinters.length">
+      <v-card-text>
         <v-chip
           class="ma-1"
-          v-for="printer in (newPrinters as Printer[])"
-          :key="printer.ip"
+          v-for="printerIP in unsupportedPrintersIPs"
+          :key="printerIP"
           variant="outlined"
         >
-          {{ printer.ip }} - {{ printer.model }}
+          {{ printerIP }}
         </v-chip>
       </v-card-text>
-      <v-card-text v-else>
-        <v-alert type="warning" variant="outlined">
-          Nenhuma nova impressora foi encontrada!
-        </v-alert>
+    </v-card>
+
+    <v-card class="mt-8" v-if="newPrinters.length">
+      <v-card-title>
+        <h5 class="text-h5 mb-8">Novas impressoras adicionadas ao sistema</h5>
+      </v-card-title>
+      <v-card-text>
+        <v-chip
+          class="ma-1"
+          v-for="printer in newPrinters"
+          :key="printer"
+          variant="outlined"
+        >
+          {{ printer.ip }} ({{ printer.model }})
+        </v-chip>
       </v-card-text>
     </v-card>
   </v-container>
@@ -58,12 +69,12 @@
 
 <script lang="ts" setup>
 import { api } from '@/api'
-import { Printer } from '@prisma/client'
 import { ref } from 'vue'
 
 const loading = ref(false)
 
-const discoveredPrintersIPs = ref([])
+const supportedPrintersIPs = ref([])
+const unsupportedPrintersIPs = ref([])
 
 const newPrinters = ref([])
 
@@ -75,7 +86,10 @@ async function discoverPrinters() {
       method: 'POST'
     })
 
-    discoveredPrintersIPs.value = response.discoveredPrintersIPs
+    console.log(response)
+
+    supportedPrintersIPs.value = response.supportedPrintersIPs
+    unsupportedPrintersIPs.value = response.unsupportedPrintersIPs
     newPrinters.value = response.newPrinters
   } catch (error: any) {
     console.log(error.message)

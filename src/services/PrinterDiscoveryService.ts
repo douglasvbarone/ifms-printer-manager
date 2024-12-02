@@ -4,6 +4,7 @@ import { PrinterStatusService } from './PrinterStatusService.js'
 import { prisma } from '../prisma.js'
 import { Printer } from '@prisma/client'
 import log from '../log.js'
+import { objectIdsRepository } from '../repositories/ObjectIDRepository.js'
 
 export class PrinterDiscoveryService {
   private static async isPrinter(ip: string) {
@@ -34,9 +35,12 @@ export class PrinterDiscoveryService {
   }
 
   // Check every IP in the range for a printer and return an array of IPs that are printers
-  static async discovery(cdir: string): Promise<string[]> {
+  static async discovery(
+    cdir: string
+  ): Promise<{ supportedPrinters: string[]; unsupportedPrinters: string[] }> {
     const printers: string[] = []
     const blockIPs: string[] = []
+    const unsupportedPrinters: string[] = []
 
     try {
       const block = new netmask.Netmask(cdir)
@@ -55,11 +59,22 @@ export class PrinterDiscoveryService {
         blockIPs.map(async ip => {
           try {
             if (await PrinterDiscoveryService.isPrinter(ip)) {
-              printers.push(ip)
-              log.info(
-                new Date().toLocaleString(),
-                `Found printer at IP: ${ip}`
-              )
+              const model = await PrinterStatusService.getPrinterModel(ip)
+
+              try {
+                objectIdsRepository.getPrinterObjectIds(model)
+                printers.push(ip)
+                log.info(
+                  new Date().toLocaleString(),
+                  `Found printer at IP: ${ip}`
+                )
+              } catch (error) {
+                unsupportedPrinters.push(ip)
+                log.info(
+                  new Date().toLocaleString(),
+                  `Found unsupported printer at IP: ${ip}`
+                )
+              }
             }
           } catch (error: any) {
             log.error(
@@ -73,14 +88,18 @@ export class PrinterDiscoveryService {
       log.error(new Date().toLocaleString(), error)
     }
 
-    return printers
+    return {
+      supportedPrinters: printers,
+      unsupportedPrinters
+    }
   }
 
   static async discoverAll() {
     const networks = await prisma.network.findMany()
 
     const newPrinters: Printer[] = []
-    const discoveredPrintersIPs: string[] = []
+    const supportedPrintersIPs: string[] = []
+    const unsupportedPrintersIPs: string[] = []
 
     for (const network of networks) {
       log.info(
@@ -93,14 +112,19 @@ export class PrinterDiscoveryService {
         const discoveredPrintersIPsForNetwork =
           await PrinterDiscoveryService.discovery(network.cidr)
 
-        discoveredPrintersIPs.push(...discoveredPrintersIPsForNetwork)
+        supportedPrintersIPs.push(
+          ...discoveredPrintersIPsForNetwork.supportedPrinters
+        )
+        unsupportedPrintersIPs.push(
+          ...discoveredPrintersIPsForNetwork.unsupportedPrinters
+        )
       } catch (error: any) {
         log.error(new Date().toLocaleString(), error)
       }
 
       const printers = await prisma.printer.findMany()
 
-      const newPrintersIPs = discoveredPrintersIPs.filter(
+      const newPrintersIPs = supportedPrintersIPs.filter(
         ip => !printers.find(printer => printer.ip === ip)
       )
 
@@ -123,6 +147,6 @@ export class PrinterDiscoveryService {
       )
     }
 
-    return { discoveredPrintersIPs, newPrinters }
+    return { supportedPrintersIPs, newPrinters, unsupportedPrintersIPs }
   }
 }
