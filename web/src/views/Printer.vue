@@ -45,7 +45,7 @@ const router = useRouter()
 
 const printer = ref()
 
-const serialNumber = router.currentRoute.value.params.serialNumber as string
+const { serialNumber } = router.currentRoute.value.params
 
 async function getPrinter() {
   try {
