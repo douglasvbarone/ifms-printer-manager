@@ -32,14 +32,14 @@
     "@types/npmlog": "^7.0.0",
     "nodemon": "^3.1.7",
     "prettier": "^3.4.1",
-    "prisma": "^5.22.0",
+    "prisma": "^6.0.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
-    "@prisma/client": "^5.22.0",
+    "@prisma/client": "^6.0.1",
     "@types/cors": "^2.8.17",
     "@types/netmask": "^2.0.5",
     "body-parser": "^1.20.3",
@@ -49,7 +49,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
-    "ldapts": "^7.2.1",
+    "ldapts": "^7.2.2",
     "net-snmp": "^3.15.1",
     "netmask": "^2.0.2",
     "npmlog": "^7.0.1"
