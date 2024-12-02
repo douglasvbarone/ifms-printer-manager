@@ -57,7 +57,7 @@
         <v-chip
           class="ma-1"
           v-for="printer in newPrinters"
-          :key="printer"
+          :key="printer.ip"
           variant="outlined"
         >
           {{ printer.ip }} ({{ printer.model }})
@@ -76,7 +76,7 @@ const loading = ref(false)
 const supportedPrintersIPs = ref([])
 const unsupportedPrintersIPs = ref([])
 
-const newPrinters = ref([])
+const newPrinters = ref<{ ip: string; model: string }[]>([])
 
 async function discoverPrinters() {
   try {
