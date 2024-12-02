@@ -23,19 +23,11 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="12" md="6" lg="4">
-        <printer-toner-chart
-          v-if="printer"
-          :status="printer?.status"
-          class="fill-height"
-        />
+      <v-col cols="12" md="6" lg="4" v-if="printer?.status">
+        <printer-toner-chart :status="printer?.status" class="fill-height" />
       </v-col>
-      <v-col cols="12" md="6" lg="4">
-        <printer-counter-chart
-          v-if="printer"
-          :status="printer?.status"
-          class="fill-height"
-        />
+      <v-col cols="12" md="6" lg="4" v-if="printer">
+        <printer-counter-chart :status="printer?.status" class="fill-height" />
       </v-col>
     </v-row>
   </v-container>
@@ -44,7 +36,7 @@
 import { api } from '@/api'
 import { Printer } from '@prisma/client'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, onActivated } from 'vue'
 import PrinterCard from '@/components/PrinterCard.vue'
 import PrinterTonerChart from '@/components/PrinterTonerChart.vue'
 import PrinterCounterChart from '@/components/PrinterCounterChart.vue'
@@ -67,5 +59,7 @@ async function getPrinter() {
   }
 }
 
-getPrinter()
+onActivated(async () => {
+  await getPrinter()
+})
 </script>
