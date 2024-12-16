@@ -9,7 +9,7 @@ export class EventsController {
 
   static async eventsHandler(req: Request, res: Response) {
     /*
-      If the server is behind a nginx reverse proxy, use the following configuration:
+      If the server is behind a NGINX reverse proxy, use the following configuration on the server:
       proxy_read_timeout 24h;
     */
     const headers = {
