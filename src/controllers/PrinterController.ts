@@ -118,17 +118,17 @@ class PrinterController {
 
 router.get(
   '/',
-  hasRolesMiddleware(['INSPECTOR', 'ADMIN']),
+  hasRolesMiddleware(['USER', 'INSPECTOR', 'ADMIN']),
   PrinterController.index
 )
 router.get(
   '/:serialNumber',
-  hasRolesMiddleware(['INSPECTOR', 'ADMIN']),
+  hasRolesMiddleware(['USER', 'INSPECTOR', 'ADMIN']),
   PrinterController.show
 )
 router.put(
   '/:serialNumber',
-  hasRolesMiddleware(['ADMIN']),
+  hasRolesMiddleware(['USER', 'ADMIN']),
   PrinterController.edit
 )
 router.delete(

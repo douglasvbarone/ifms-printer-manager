@@ -4,7 +4,7 @@ import { prisma } from '../prisma.js'
 
 const ADMIN_GROUP = process.env.ADMIN_GROUP || 'PP-SERTI'
 const INSPECTOR_GROUP = process.env.INSPECTOR_GROUP || 'Inspectors'
-const USER_GROUP = process.env.USER_GROUP || 'G_SERVIDORES'
+// const USER_GROUP = process.env.USER_GROUP || 'G_SERVIDORES'
 
 export class UserService {
   static async importUser(username: string) {
@@ -23,8 +23,9 @@ export class UserService {
       roles: []
     }
 
+    user.roles.push('USER') // Default role
+
     ldapUser.groups?.forEach(group => {
-      if (group === USER_GROUP) user.roles?.push('USER')
       if (group === ADMIN_GROUP) user.roles?.push('ADMIN')
       if (group === INSPECTOR_GROUP) user.roles?.push('INSPECTOR')
     })
