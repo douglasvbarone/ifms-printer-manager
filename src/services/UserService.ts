@@ -4,7 +4,6 @@ import { prisma } from '../prisma.js'
 
 const ADMIN_GROUP = process.env.ADMIN_GROUP || 'PP-SERTI'
 const INSPECTOR_GROUP = process.env.INSPECTOR_GROUP || 'Inspectors'
-// const USER_GROUP = process.env.USER_GROUP || 'G_SERVIDORES'
 
 export class UserService {
   static async importUser(username: string) {
